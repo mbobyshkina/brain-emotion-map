@@ -88,7 +88,10 @@
       <!-- АНАЛИЗ -->
       <div class="view" id="view-analyze">
         <div class="input-card">
-          <label for="feelInput" data-i18n="ask">Что вы сейчас чувствуете или испытываете?</label>
+          <div class="ask-head">
+            <label for="feelInput" data-i18n="ask">Что вы сейчас чувствуете или испытываете?</label>
+            <span id="surpriseHolder"></span>
+          </div>
           <textarea id="feelInput" rows="3" data-i18n-ph="placeholder"
             placeholder="Например: мало спала, много ела и чувствую себя вялой…"></textarea>
           <div class="chips" id="exampleChips"></div>

@@ -673,11 +673,13 @@ function surpriseMe() {
 function buildChips() {
   const list = (lang === 'en' && window.EN_EXAMPLES) ? EN_EXAMPLES : EXAMPLES;
   const surprise = lang === 'en' ? '🎲 Surprise me' : '🎲 Удиви меня';
-  $('#exampleChips').innerHTML =
-    `<span class="chip surprise" id="surpriseChip">${surprise}</span>` +
-    list.map(e => `<span class="chip">${e}</span>`).join('');
-  $('#surpriseChip').addEventListener('click', surpriseMe);
-  $$('#exampleChips .chip:not(.surprise)').forEach(c => c.addEventListener('click', () => { $('#feelInput').value = c.textContent; runAnalyze(); }));
+  const holder = $('#surpriseHolder');
+  if (holder) {
+    holder.innerHTML = `<button type="button" class="surprise-btn" id="surpriseChip">${surprise}</button>`;
+    $('#surpriseChip').addEventListener('click', surpriseMe);
+  }
+  $('#exampleChips').innerHTML = list.map(e => `<span class="chip">${e}</span>`).join('');
+  $$('#exampleChips .chip').forEach(c => c.addEventListener('click', () => { $('#feelInput').value = c.textContent; runAnalyze(); }));
 }
 
 /* ---------- Ракурсы ---------- */
