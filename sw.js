@@ -1,7 +1,7 @@
 /* НейроЗеркало — сервис-воркер: офлайн-кэш + свежие обновления.
    Стратегия «сеть, потом кэш»: онлайн всегда берём свежую версию
    (и обновляем кэш), офлайн — отдаём из кэша. */
-const CACHE = 'neuromirror-v4';
+const CACHE = 'brainmap-v5';
 const ASSETS = [
   './', './index.html', './styles.css',
   './data.js', './content.js', './explore-data.js', './updates.js',

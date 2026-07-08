@@ -507,3 +507,14 @@ textarea:focus{outline:none;border-color:var(--accent)}
 .bt-btn.ghost{opacity:.8}
 .bt-btn.tour{width:100%;text-align:center;background:rgba(110,168,255,.12);border-color:rgba(110,168,255,.4);color:var(--accent)}
 .bt-slider{flex:1;min-width:120px;accent-color:var(--accent);cursor:pointer}
+
+/* Карточка описания во время экскурсии (поверх 3D снизу) */
+.tour-cap{position:absolute;left:12px;right:12px;bottom:12px;z-index:5;
+  background:rgba(14,18,32,.92);border:1px solid var(--accent);border-radius:12px;
+  padding:11px 14px;backdrop-filter:blur(4px);box-shadow:0 8px 24px rgba(0,0,0,.4);
+  animation:rise .25s ease both;pointer-events:none}
+.tour-cap.hidden{display:none}
+.tc-top{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin-bottom:4px}
+.tc-title{font-size:15.5px;font-weight:800;color:var(--text)}
+.tc-pos{font-size:11.5px;color:var(--accent);font-weight:700;white-space:nowrap}
+.tc-desc{font-size:13px;line-height:1.5;color:var(--muted)}

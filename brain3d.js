@@ -535,8 +535,8 @@
       if (i >= list.length) { stopTour(); if (tourCapCb) tourCapCb(null); return; }
       const it = list[i];
       if (it.id && markers[it.id]) { pick(it.id); focusOn(it.id); }
-      if (tourCapCb) tourCapCb(it.cap || regionLabel(it.id));
-      i++; tourTimer = setTimeout(step, 3000);
+      if (tourCapCb) tourCapCb(it, i + 1, list.length);   // передаём всю карточку + позицию
+      i++; tourTimer = setTimeout(step, 4600);
     };
     step();
   }
