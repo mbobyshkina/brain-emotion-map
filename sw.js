@@ -1,11 +1,12 @@
 /* НейроЗеркало — сервис-воркер: офлайн-кэш + свежие обновления.
    Стратегия «сеть, потом кэш»: онлайн всегда берём свежую версию
    (и обновляем кэш), офлайн — отдаём из кэша. */
-const CACHE = 'brainmap-v5';
+const CACHE = 'brainmap-v6';
 const ASSETS = [
-  './', './index.html', './styles.css',
-  './data.js', './content.js', './explore-data.js', './updates.js',
-  './brain3d.js', './charts.js', './explore.js', './app.js',
+  './', './index.html', './styles.css?v=6',
+  './data.js?v=6', './content.js?v=6', './explore-data.js?v=6', './course-data.js?v=6',
+  './updates.js?v=6', './programs-data.js?v=6', './brain3d.js?v=6', './charts.js?v=6',
+  './friendly.js?v=6', './explore.js?v=6', './programs.js?v=6', './en.js?v=6', './app.js?v=6',
   './lib/three.min.js', './lib/OrbitControls.js',
   './manifest.webmanifest', './icons/icon.svg',
   './icons/icon-192.png', './icons/icon-512.png'
