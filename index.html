@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Brain Emotion Map — 3D brain atlas of your states</title>
+<meta name="theme-color" content="#6ea8ff" />
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="icon" href="icons/icon.svg" type="image/svg+xml" />
+<link rel="apple-touch-icon" href="icons/icon-192.png" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+<div class="app">
+
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo">🧠</span>
+      <div>
+        <h1>Brain Emotion Map</h1>
+        <p class="tagline" data-i18n="tagline">Что чувствует ваш мозг — и почему</p>
+      </div>
+    </div>
+    <div class="top-right">
+      <div class="lang-switch" id="langSwitch">
+        <button data-lang="ru" class="active">RU</button>
+        <button data-lang="en">EN</button>
+      </div>
+      <button class="install-btn" id="installBtn" data-i18n="install">⤓ Установить</button>
+    </div>
+  </header>
+
+  <nav class="tabs" id="tabs">
+    <button class="tab active" data-tab="analyze" data-i18n="tab_analyze">Анализ</button>
+    <button class="tab" data-tab="brain" data-i18n="tab_brain">Мозг</button>
+    <button class="tab" data-tab="programs" data-i18n="tab_programs">Программы</button>
+    <button class="tab" data-tab="history" data-i18n="tab_history">Дневник</button>
+  </nav>
+
+  <main class="layout">
+
+    <!-- Левая колонка: 3D-мозг -->
+    <section class="brain-panel">
+      <div class="view-bar" id="viewBar">
+        <span class="vb-label" data-i18n="view_label">Ракурс:</span>
+        <button data-view="threeq" class="active">3/4</button>
+        <button data-view="side" data-i18n="view_side">Сбоку</button>
+        <button data-view="front" data-i18n="view_front">Спереди</button>
+        <button data-view="top" data-i18n="view_top">Сверху</button>
+        <span class="vb-hint" data-i18n="rotate_hint">🖱 потяните, чтобы вращать</span>
+      </div>
+      <div class="brain-wrap" id="brainWrap"></div>
+      <div class="chem-legend" id="chemLegend"></div>
+      <div class="brain-caption">
+        <span class="hint" id="brainHint" data-i18n="hint_default">3D-модель мозга — вращайте её мышью. Опишите состояние, и активные зоны подсветятся.</span>
+      </div>
+    </section>
+
+    <!-- Правая колонка -->
+    <section class="content-panel">
+
+      <!-- АНАЛИЗ -->
+      <div class="view" id="view-analyze">
+        <div class="input-card">
+          <label for="feelInput" data-i18n="ask">Что вы сейчас чувствуете или испытываете?</label>
+          <textarea id="feelInput" rows="3" data-i18n-ph="placeholder"
+            placeholder="Например: мало спала, много ела и чувствую себя вялой…"></textarea>
+          <div class="chips" id="exampleChips"></div>
+
+          <details class="extra-block" id="triggersBlock">
+            <summary data-i18n="triggers_title">Что было сегодня (причины) — необязательно</summary>
+            <div class="trigger-chips" id="triggerChips"></div>
+          </details>
+
+          <button class="analyze-btn" id="analyzeBtn" data-i18n="analyze_btn">Показать, что в мозге →</button>
+        </div>
+
+        <details class="extra-block lib-block" id="libraryBlock">
+          <summary data-i18n="lib_summary">📚 Все состояния, которые я понимаю — нажмите, чтобы листать</summary>
+          <input class="lib-search" id="libSearch" data-i18n-ph="lib_search" placeholder="Поиск состояния…" />
+          <div class="lib-grid" id="libGrid"></div>
+        </details>
+
+        <div class="results" id="results">
+          <div class="empty-state">
+            <div class="empty-emoji">🧭</div>
+            <p data-i18n="analyze_empty">Опишите состояние или образ жизни («мало спал», «много кофе», «ни с кем не общалась») —
+            приложение покажет, что происходит в мозге, и даст свежие научные советы.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- МОЗГ (хаб) -->
+      <div class="view hidden" id="view-brain">
+        <div class="input-card">
+          <div class="explore-modes" id="exploreModes">
+            <button class="em-btn active" data-mode="schema" data-i18n="mode_schema">🗺 Схема</button>
+            <button class="em-btn" data-mode="journey" data-i18n="mode_journey">🧭 Погружение</button>
+            <button class="em-btn" data-mode="atlas" data-i18n="mode_atlas">🧠 Атлас</button>
+            <button class="em-btn" data-mode="quiz" data-i18n="mode_quiz">🎯 Викторина</button>
+            <button class="em-btn" data-mode="updates" data-i18n="mode_updates">💡 Новое</button>
+          </div>
+          <div id="schemaIntro">
+            <h2 data-i18n="schema_title">Карта мозга — нажми и узнай</h2>
+            <p class="muted" data-i18n="schema_sub">Нажмите структуру на схеме — простыми словами, за что она отвечает, с ассоциацией. Наведите на 3D-модель, чтобы увидеть название и полушарие.</p>
+          </div>
+          <div id="journeyIntro" class="hidden">
+            <h2 data-i18n="journey_title">Погружение — слой за слоем</h2>
+            <p class="muted" data-i18n="journey_sub">От поверхности (доли мозга) вглубь — к эмоциям, мотивации и нейромедиаторам. Открывайте карточки, а мини-тест откроет следующий слой.</p>
+          </div>
+          <div id="atlasIntro" class="hidden">
+            <h2 data-i18n="atlas_title">Атлас структур мозга</h2>
+            <p class="muted" data-i18n="atlas_sub">Нажмите структуру в списке или прямо на 3D-модели.</p>
+            <div class="region-list" id="regionList"></div>
+          </div>
+          <div id="quizIntro" class="hidden">
+            <h2 data-i18n="quiz_title">Викторина: угадай зону мозга</h2>
+            <p class="muted" data-i18n="quiz_sub">Проверьте, что запомнили. За правильные ответы — очки.</p>
+            <div class="quiz-top">
+              <span id="quizScore" class="quiz-score">Счёт: 0</span>
+              <button class="ghost-btn" id="quizRestart" data-i18n="quiz_restart">Начать заново</button>
+              <!-- quizScore обновляется из JS через t('score') -->
+
+            </div>
+          </div>
+          <div id="updatesIntro" class="hidden">
+            <h2 data-i18n="updates_title">💡 Открытия о мозге</h2>
+            <p class="muted" data-i18n="updates_sub">Свежие находки нейронауки с метками достоверности; неподтверждённое честно помечается.</p>
+            <div class="upd-filters" id="updFilters">
+              <button class="uf-btn active" data-level="all" data-i18n="uf_all">Все</button>
+              <button class="uf-btn" data-level="verified" data-i18n="uf_verified">✅ проверено</button>
+              <button class="uf-btn" data-level="emerging" data-i18n="uf_emerging">🧪 новые данные</button>
+              <button class="uf-btn" data-level="unverified" data-i18n="uf_unverified">❓ не подтверждено</button>
+              <button class="ghost-btn upd-refresh" id="updRefresh" data-i18n="upd_refresh">↻ Обновить</button>
+            </div>
+          </div>
+        </div>
+
+        <div id="schemaArea"></div>
+        <div id="journeyArea" class="hidden"></div>
+        <div id="atlasArea" class="hidden">
+          <div class="results" id="exploreInfo">
+            <div class="empty-state"><div class="empty-emoji">👆</div>
+              <p data-i18n="explore_empty">Выберите структуру мозга, чтобы прочитать о ней.</p></div>
+          </div>
+        </div>
+        <div id="quizPanel" class="hidden"><div class="results" id="quizArea"></div></div>
+        <div id="updatesPanel" class="hidden"><div class="results" id="updList"></div></div>
+      </div>
+
+      <!-- ПРОГРАММЫ -->
+      <div class="view hidden" id="view-programs">
+        <div class="input-card">
+          <h2 data-i18n="programs_title">Программы перепрограммирования мозга</h2>
+          <p class="muted" data-i18n="programs_sub">Пошаговые практики с трекером: дофаминовое голодание, борьба со скукой, восстановление мотивации. Медленно и по науке.</p>
+        </div>
+        <div id="programsArea"></div>
+      </div>
+
+      <!-- ДНЕВНИК -->
+      <div class="view hidden" id="view-history">
+        <div class="input-card">
+          <div class="history-head">
+            <h2 data-i18n="tab_history">Дневник</h2>
+            <div class="hist-tools">
+              <button class="ghost-btn" id="exportCsv" data-i18n="export_csv">Экспорт CSV</button>
+              <button class="ghost-btn" id="exportPdf" data-i18n="export_pdf">PDF / печать</button>
+              <button class="ghost-btn" id="shareBtn" data-i18n="share">Поделиться</button>
+              <button class="ghost-btn" id="backupBtn" data-i18n="backup">Резервная копия</button>
+              <button class="ghost-btn" id="restoreBtn" data-i18n="restore">Восстановить</button>
+              <button class="ghost-btn danger" id="clearHistory" data-i18n="clear">Очистить</button>
+            </div>
+          </div>
+          <p class="muted" data-i18n="backup_note">Записи хранятся только в этом браузере. «Резервная копия» — зашифрованный файл для переноса на другое устройство.</p>
+        </div>
+
+        <div class="charts-card hidden" id="chartsCard">
+          <h3 data-i18n="charts_title">Динамика</h3>
+          <div class="chart-block"><div class="chart-title" data-i18n="chart_mood">Настроение за 2 недели</div><div id="moodChart"></div></div>
+          <div class="chart-block"><div class="chart-title" data-i18n="chart_weekday">Записи по дням недели</div><div id="weekdayChart"></div></div>
+          <div class="chart-block" id="trigCorrBlock"><div class="chart-title" data-i18n="chart_trig">Триггеры и настроение</div><div id="trigChart"></div></div>
+          <div class="insights" id="insights"></div>
+        </div>
+
+        <div class="results" id="historyList"></div>
+      </div>
+
+    </section>
+  </main>
+
+  <footer class="disclaimer">
+    ⚠️ <strong data-i18n="disclaimer_strong">Это образовательный инструмент</strong><span data-i18n="disclaimer_rest">, а не диагностика. Приложение показывает упрощённую нейробиологию состояний и не заменяет консультацию врача или психотерапевта. Советы по добавкам — не назначение; обсуждайте их с врачом. Если состояние тяжёлое, длительное или есть мысли о причинении себе вреда — обратитесь за профессиональной помощью.</span>
+  </footer>
+</div>
+
+<input type="file" id="restoreFile" accept=".nmbak,application/json" class="hidden-file" />
+
+<!-- Модалка установки -->
+<div class="modal-overlay hidden" id="installModal">
+  <div class="modal">
+    <button class="modal-close" id="installClose">✕</button>
+    <h3 id="installHead" data-i18n="install_head">Установить приложение</h3>
+    <div id="installBody"></div>
+  </div>
+</div>
+
+<script src="lib/three.min.js"></script>
+<script src="lib/OrbitControls.js"></script>
+<script src="data.js"></script>
+<script src="content.js"></script>
+<script src="explore-data.js"></script>
+<script src="updates.js"></script>
+<script src="programs-data.js"></script>
+<script src="brain3d.js"></script>
+<script src="charts.js"></script>
+<script src="friendly.js"></script>
+<script src="explore.js"></script>
+<script src="programs.js"></script>
+<script src="en.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
