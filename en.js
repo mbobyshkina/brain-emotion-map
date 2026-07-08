@@ -444,7 +444,22 @@ const EN = {
     excitement: ["excited", "anticipation", "can't wait", "cant wait", "thrill", "adrenaline", "buzzing", "pumped"],
     pain: ["in pain", "hurts", "ache", "aching", "headache", "sore", "cramp", "my body hurts"],
     nostalgia: ["nostalgia", "miss the past", "nostalgic", "good old days", "miss how it was"],
-    confusion: ["confused", "don't understand myself", "dont understand myself", "lost", "don't know what i feel", "dont know what i feel", "mixed up", "muddled"]
+    confusion: ["confused", "don't understand myself", "dont understand myself", "lost", "don't know what i feel", "dont know what i feel", "mixed up", "muddled"],
+    resentment: ["resentful", "resentment", "hold a grudge", "grudge", "offended", "hurt by", "treated unfairly", "took offense", "bitter about"],
+    envy: ["envy", "envious", "others have it better", "why not me", "jealous of their success", "everyone has it except me"],
+    jealousy: ["jealous", "jealousy", "afraid he'll leave", "afraid she'll leave", "scared of losing my partner", "suspect cheating", "afraid of being cheated on"],
+    social_anxiety: ["social anxiety", "shy around people", "afraid of judgment", "afraid to speak up", "afraid of public speaking", "what will they think", "blush around people", "scared to call", "awkward around people"],
+    impostor: ["impostor", "imposter", "feel like a fraud", "not good enough", "just got lucky", "they'll find out", "don't deserve", "everyone is smarter", "afraid of being exposed"],
+    relief: ["relieved", "relief", "let go", "weight off my shoulders", "finally over", "dodged it", "phew", "it worked out"],
+    pride: ["proud of myself", "proud", "i did it", "i made it", "achieved", "accomplished", "i nailed it", "i earned it", "pleased with myself"],
+    gratitude: ["grateful", "gratitude", "thankful", "appreciate what i have", "i'm lucky to have", "count my blessings"],
+    flow: ["in the flow", "in flow", "calm", "at peace", "serene", "absorbed in", "time flies", "in the zone", "in my element", "balanced"],
+    numbness: ["feel nothing", "emotionally numb", "numbness", "detached", "like it's not me", "watching myself", "unreal", "disconnected from emotions", "behind glass", "depersonaliz"],
+    hangry: ["hangry", "hungry and angry", "irritable when hungry", "haven't eaten and irritable", "everything annoys me when hungry", "grumpy when hungry"],
+    dejavu: ["deja vu", "dejavu", "like it happened before", "feels familiar", "i've seen this before", "i've been here before"],
+    frisson: ["chills from music", "goosebumps from music", "musical chills", "shivers down my spine", "aesthetic chills", "frisson"],
+    perfectionism: ["perfectionism", "perfectionist", "has to be perfect", "afraid to do it badly", "all or nothing", "fear of mistakes stops me", "keep redoing", "can't finish until perfect"],
+    night_rumination: ["thoughts race at night", "can't shut my brain off at night", "mind won't stop at night", "anxious thoughts at night", "lie awake overthinking", "brain won't turn off at night"]
   },
 
   lifestyleKeywords: {
@@ -454,7 +469,11 @@ const EN = {
     no_exercise: ["sat all day", "no exercise", "didn't move", "didnt move", "lay all day", "no movement", "didn't work out", "sedentary"],
     caffeine: ["too much coffee", "coffee all day", "energy drink", "too much caffeine", "overdid caffeine"],
     alcohol: ["drank yesterday", "hungover", "hangover", "alcohol", "had drinks"],
-    screen: ["on my phone all day", "scrolling", "too much social media", "binge watch", "screen all day", "doomscroll"]
+    screen: ["on my phone all day", "scrolling", "too much social media", "binge watch", "screen all day", "doomscroll"],
+    dehydration: ["forgot to drink", "barely drank water", "hardly any water", "dehydrated", "no water all day", "didn't drink water"],
+    pms: ["before my period", "pms", "premenstrual", "hormones", "luteal phase", "period is coming and my mood"],
+    sickness: ["getting sick", "caught a cold", "have a fever", "i'm ill", "coming down with something", "body aches", "inflammation", "the flu"],
+    stuffy: ["stuffy", "stuffy room", "no fresh air", "stale air", "not enough air", "airless room", "hard to breathe indoors"]
   }
 };
 
