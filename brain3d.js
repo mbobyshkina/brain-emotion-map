@@ -46,6 +46,9 @@
   let chemGroup, chemFlows = [];
   let afterState = null;        // {calm:Set, activate:Set} когда включён режим «после»
   let idleTimer = 0;
+  let xray = 0, cutMode = 'none';   // рентген-прозрачность и режим разреза
+  const lobeLevel = {};             // lobeId -> 0 base / 1 hover / 2 picked
+  let tourTimer = null, tourCapCb = null;
   const clock = { t: 0 };
 
   const COL = {
@@ -66,6 +69,7 @@
     renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
     renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
     renderer.setSize(w, h);
+    renderer.localClippingEnabled = true;   // для «разреза» плоскостью
     el.appendChild(renderer.domElement);
 
     // Свет
@@ -192,18 +196,40 @@
     brainGroup.add(st); lobeMeshes['brainstem_lobe'] = st;
   }
 
-  /* ---------- Подсветка долей ---------- */
-  function setLobe(id, level) {   // level: 0 base, 1 hover, 2 picked
+  /* ---------- Подсветка долей + рентген ---------- */
+  function baseOp(level) { return level >= 2 ? 0.82 : level === 1 ? 0.55 : 0.30; }
+  function applyLobeOpacity(id) {
     const m = lobeMeshes[id]; if (!m) return;
-    m.material.opacity = level >= 2 ? 0.82 : level === 1 ? 0.55 : 0.30;
-    m.material.emissiveIntensity = level >= 2 ? 0.55 : level === 1 ? 0.28 : 0.05;
+    const lv = lobeLevel[id] || 0;
+    m.material.opacity = baseOp(lv) * (1 - 0.92 * xray);
+    m.material.emissiveIntensity = lv >= 2 ? 0.55 : lv === 1 ? 0.28 : 0.05;
   }
+  function setLobe(id, level) { lobeLevel[id] = level; applyLobeOpacity(id); }
   function clearLobes() { Object.keys(lobeMeshes).forEach(id => setLobe(id, pickedLobe === id ? 2 : 0)); }
   function pickLobe(id) {
     pickedLobe = id;
     resetAll('dim');                          // приглушить точечные структуры
     Object.keys(lobeMeshes).forEach(k => setLobe(k, k === id ? 2 : 0));
-    const m = lobeMeshes[id]; if (m) { /* без движения камеры */ }
+  }
+
+  // «Рентген»: 0 — кора плотная, 1 — почти прозрачная (видно глубокие структуры)
+  function setXray(v) { xray = Math.max(0, Math.min(1, v)); Object.keys(lobeMeshes).forEach(applyLobeOpacity); }
+
+  // Разрез плоскостью / изоляция полушария
+  function setCut(mode) {
+    cutMode = mode;
+    let planes = [];
+    if (mode === 'sagittal' || mode === 'left') planes = [new THREE.Plane(new THREE.Vector3(-1, 0, 0), 0)];
+    else if (mode === 'right') planes = [new THREE.Plane(new THREE.Vector3(1, 0, 0), 0)];
+    else if (mode === 'coronal') planes = [new THREE.Plane(new THREE.Vector3(0, 0, -1), 0)];
+    Object.values(lobeMeshes).forEach(m => { m.material.clippingPlanes = planes; m.material.clipIntersection = false; });
+    // изоляция полушария — прячем маркеры противоположной стороны
+    Object.values(markers).forEach(mk => mk.meshes.forEach(mesh => {
+      let vis = true;
+      if (mode === 'left' && mesh.userData.side === 'right') vis = false;
+      if (mode === 'right' && mesh.userData.side === 'left') vis = false;
+      mesh.visible = vis;
+    }));
   }
 
   /* ---------- Маркеры структур ---------- */
@@ -370,33 +396,51 @@
     return new THREE.QuadraticBezierCurve3(a.clone(), mid, b.clone());
   }
 
+  // Направленная стрелка «откуда → куда»: русло + наконечник + подпись + бегущие частицы
+  function addArrow(aId, bId, colorHex, opts) {
+    opts = opts || {};
+    const curve = curveBetween(aId, bId); if (!curve) return;
+    const col = new THREE.Color(colorHex);
+    const tube = new THREE.Mesh(
+      new THREE.TubeGeometry(curve, 28, 0.011, 6, false),
+      new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 0.30, depthTest: false }));
+    tube.renderOrder = 2; chemGroup.add(tube);
+    const end = curve.getPoint(1), prev = curve.getPoint(0.9);
+    const dir = end.clone().sub(prev).normalize();
+    const cone = new THREE.Mesh(new THREE.ConeGeometry(0.05, 0.13, 12),
+      new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 0.92, depthTest: false }));
+    cone.position.copy(end);
+    cone.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir);
+    cone.renderOrder = 4; chemGroup.add(cone);
+    if (opts.label) {
+      const sp = makeLabel(opts.label);
+      const mid = curve.getPoint(0.5); mid.y += 0.06; sp.position.copy(mid);
+      sp.visible = true; sp.renderOrder = 6; chemGroup.add(sp);
+    }
+    const N = opts.dots != null ? opts.dots : 4;
+    for (let i = 0; i < N; i++) {
+      const dot = new THREE.Mesh(new THREE.SphereGeometry(0.033, 10, 8),
+        new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 0.95, depthTest: false }));
+      dot.renderOrder = 5; chemGroup.add(dot);
+      chemFlows.push({ curve, dot, t: i / N, speed: 0.32 });
+    }
+  }
+
   function showChemistry(list) {
     clearChemistry();
     if (!list || !list.length) return;
     list.forEach(chem => {
       const c = CHEMISTRY[chem]; if (!c) return;
-      const col = new THREE.Color(c.color);
-      c.paths.forEach(([a, b]) => {
-        const curve = curveBetween(a, b); if (!curve) return;
-        // тонкая трубка-русло
-        const tube = new THREE.Mesh(
-          new THREE.TubeGeometry(curve, 32, 0.012, 6, false),
-          new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 0.28, depthTest: false })
-        );
-        tube.renderOrder = 2; chemGroup.add(tube);
-        // летящие частицы
-        const N = 5;
-        for (let i = 0; i < N; i++) {
-          const dot = new THREE.Mesh(
-            new THREE.SphereGeometry(0.035, 10, 8),
-            new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 0.95, depthTest: false })
-          );
-          dot.renderOrder = 4;
-          chemGroup.add(dot);
-          chemFlows.push({ curve, dot, t: i / N, speed: 0.28 + Math.random() * 0.12 });
-        }
-      });
+      c.paths.forEach(([a, b], i) => addArrow(a, b, c.color, { label: i === 0 ? c.label : null, dots: 5 }));
     });
+  }
+
+  // Подсветка целой системы: структуры + направленные связи между ними
+  function showSystem(regions, links, color, label) {
+    pickedLobe = null; clearLobes(); afterState = null; clearChemistry();
+    resetAll('dim');
+    (regions || []).forEach(id => setMarker(id, 'primary'));
+    (links || []).forEach((lk, i) => addArrow(lk[0], lk[1], color, { label: i === 0 ? label : null }));
   }
   function clearChemistry() {
     chemFlows = [];
@@ -449,26 +493,54 @@
     (calm || []).forEach(id => { const m = markers[id]; if (m) m.label.visible = true; });
   }
 
-  /* ---------- Сигнал по пути (для сценариев курса) ---------- */
+  /* ---------- Сигнал по пути: пульс бежит 1→2→3 (сценарии курса) ---------- */
   function showSignal(ids, color) {
-    pickedLobe = null; clearLobes(); afterState = null;
-    clearChemistry();
+    pickedLobe = null; clearLobes(); afterState = null; clearChemistry();
     resetAll('dim');
     ids.forEach((id, i) => { if (markers[id]) setMarker(id, i === 0 ? 'primary' : 'secondary'); });
     const col = new THREE.Color(color || 0x8ea0ff);
-    for (let i = 0; i < ids.length - 1; i++) {
-      const curve = curveBetween(ids[i], ids[i + 1]); if (!curve) continue;
-      const tube = new THREE.Mesh(new THREE.TubeGeometry(curve, 28, 0.012, 6, false),
-        new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 0.28, depthTest: false }));
-      tube.renderOrder = 2; chemGroup.add(tube);
-      for (let k = 0; k < 4; k++) {
-        const dot = new THREE.Mesh(new THREE.SphereGeometry(0.033, 10, 8),
-          new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 0.95, depthTest: false }));
-        dot.renderOrder = 4; chemGroup.add(dot);
-        chemFlows.push({ curve, dot, t: k / 4, speed: 0.32 });
-      }
+    const pts = []; ids.forEach(id => { if (markers[id]) pts.push(markers[id].center.clone()); });
+    if (pts.length < 2) return;
+    const ctrl = [];
+    for (let i = 0; i < pts.length; i++) {
+      ctrl.push(pts[i]);
+      if (i < pts.length - 1) { const mid = pts[i].clone().add(pts[i + 1]).multiplyScalar(0.5); mid.y += 0.20 + pts[i].distanceTo(pts[i + 1]) * 0.12; ctrl.push(mid); }
+    }
+    const chain = new THREE.CatmullRomCurve3(ctrl);
+    const tube = new THREE.Mesh(new THREE.TubeGeometry(chain, 64, 0.011, 6, false),
+      new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 0.28, depthTest: false }));
+    tube.renderOrder = 2; chemGroup.add(tube);
+    for (let i = 1; i < pts.length; i++) {   // наконечники в каждом узле
+      const tt = i / (pts.length - 1);
+      const p = chain.getPoint(Math.min(0.999, tt)), pv = chain.getPoint(Math.max(0, tt - 0.02));
+      const dir = p.clone().sub(pv).normalize();
+      const cone = new THREE.Mesh(new THREE.ConeGeometry(0.045, 0.12, 12),
+        new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 0.9, depthTest: false }));
+      cone.position.copy(p); cone.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir);
+      cone.renderOrder = 4; chemGroup.add(cone);
+    }
+    for (let k = 0; k < 3; k++) {             // пульс по всей цепочке
+      const dot = new THREE.Mesh(new THREE.SphereGeometry(0.04, 10, 8),
+        new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 0.98, depthTest: false }));
+      dot.renderOrder = 5; chemGroup.add(dot);
+      chemFlows.push({ curve: chain, dot, t: k * 0.34, speed: 0.22 });
     }
   }
+
+  /* ---------- Авто-экскурсия ---------- */
+  function tour(list, capCb) {
+    stopTour(); tourCapCb = capCb; controls.autoRotate = false;
+    let i = 0;
+    const step = () => {
+      if (i >= list.length) { stopTour(); if (tourCapCb) tourCapCb(null); return; }
+      const it = list[i];
+      if (it.id && markers[it.id]) { pick(it.id); focusOn(it.id); }
+      if (tourCapCb) tourCapCb(it.cap || regionLabel(it.id));
+      i++; tourTimer = setTimeout(step, 3000);
+    };
+    step();
+  }
+  function stopTour() { if (tourTimer) { clearTimeout(tourTimer); tourTimer = null; } }
 
   /* ---------- Ракурсы ---------- */
   const VIEWS = {
@@ -613,6 +685,6 @@
   window.Brain3D = {
     init, highlight, clear, pick, setView,
     showChemistry, clearChemistry, showConflict, showAfter, onRegionClick, rebuildLabels,
-    pickLobe, clearLobes, onLobeClick, showSignal
+    pickLobe, clearLobes, onLobeClick, showSignal, showSystem, setXray, setCut, tour, stopTour
   };
 })();

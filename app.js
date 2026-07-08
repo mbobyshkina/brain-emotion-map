@@ -652,6 +652,58 @@ function buildViewBar() {
   }));
 }
 
+/* ---------- Инструменты 3D: системы, рентген, разрез, экскурсия ---------- */
+const SYSTEMS = {
+  limbic: { name: 'Лимбическая система', color: '#c78bff',
+    regions: ['amygdala', 'hippocampus', 'hypothalamus', 'thalamus', 'acc', 'insula'],
+    links: [['thalamus', 'amygdala'], ['amygdala', 'hypothalamus'], ['amygdala', 'hippocampus'], ['hippocampus', 'acc']] },
+  reward: { name: 'Система вознаграждения', color: '#68f0a0', label: 'дофамин',
+    regions: ['vta', 'accumbens', 'pfc', 'striatum', 'ofc'],
+    links: [['vta', 'accumbens'], ['accumbens', 'pfc'], ['accumbens', 'striatum']] },
+  stress: { name: 'Ось стресса (HPA)', color: '#ff8a4c', label: 'кортизол',
+    regions: ['amygdala', 'hypothalamus', 'pituitary', 'brainstem', 'pfc'],
+    links: [['amygdala', 'hypothalamus'], ['hypothalamus', 'pituitary'], ['pituitary', 'brainstem']] },
+  dopamine: { name: 'Дофаминовые пути', color: '#68f0a0', label: 'дофамин',
+    regions: ['vta', 'accumbens', 'pfc', 'striatum'],
+    links: [['vta', 'accumbens'], ['vta', 'pfc'], ['vta', 'striatum']] }
+};
+const TOUR = [
+  { id: 'pfc', cap: 'Префронтальная кора — «дирижёр»: планы, решения, самоконтроль.' },
+  { id: 'amygdala', cap: 'Амигдала — сигнализация: страх, тревога, «опасность!».' },
+  { id: 'hippocampus', cap: 'Гиппокамп — архив памяти и контекста.' },
+  { id: 'thalamus', cap: 'Таламус — коммутатор: пропускает сигналы в сознание.' },
+  { id: 'hypothalamus', cap: 'Гипоталамус — гормоны, сон, голод, стресс.' },
+  { id: 'accumbens', cap: 'Прилежащее ядро — центр желания «хочу».' },
+  { id: 'vta', cap: 'VTA — источник дофамина мотивации.' },
+  { id: 'insula', cap: 'Инсула — чувство тела изнутри, интуиция.' },
+  { id: 'cerebellum', cap: 'Мозжечок — координация, точность, автоматизм.' },
+  { id: 'brainstem', cap: 'Ствол мозга — дыхание, сердце, бодрствование.' }
+];
+let touring = false;
+function buildBrainTools() {
+  $$('#brainTools [data-sys]').forEach(b => b.addEventListener('click', () => {
+    const s = SYSTEMS[b.dataset.sys];
+    if (!s) { Brain3D.clear(); $('#brainHint').textContent = t('hint_default'); return; }
+    Brain3D.showSystem(s.regions, s.links, s.color, s.label);
+    $('#brainHint').textContent = '🕸 ' + s.name + (s.label ? ' · медиатор: ' + s.label : '');
+  }));
+  const slider = $('#xraySlider');
+  if (slider) slider.addEventListener('input', () => Brain3D.setXray(slider.value / 100));
+  $$('#brainTools [data-cut]').forEach(b => b.addEventListener('click', () => {
+    $$('#brainTools .cut').forEach(x => x.classList.remove('active'));
+    b.classList.add('active'); Brain3D.setCut(b.dataset.cut);
+  }));
+  const tb = $('#tourBtn');
+  if (tb) tb.addEventListener('click', () => {
+    if (touring) { Brain3D.stopTour(); touring = false; tb.textContent = '▶ Экскурсия по мозгу'; setAnalyzeHint(); return; }
+    touring = true; tb.textContent = '⏹ Остановить';
+    Brain3D.tour(TOUR, cap => {
+      if (cap) { $('#brainHint').textContent = '🎥 ' + cap; }
+      else { touring = false; tb.textContent = '▶ Экскурсия по мозгу'; setAnalyzeHint(); }
+    });
+  });
+}
+
 /* ---------- PWA ---------- */
 let deferredPrompt = null;
 if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
@@ -708,6 +760,6 @@ $('#libSearch').addEventListener('input', e => buildLibrary(e.target.value));
 $$('#langSwitch button').forEach(b => b.addEventListener('click', () => { lang = b.dataset.lang; localStorage.setItem(LANG_KEY, lang); applyLang(); }));
 
 /* ---------- Старт ---------- */
-buildChips(); buildRegionList(); buildViewBar(); buildTriggerChips();
+buildChips(); buildRegionList(); buildViewBar(); buildBrainTools(); buildTriggerChips();
 buildLibrary(); buildCourse(); renderHistory(); applyLang();
 buildUpdatesUI(); if (window.Explore) Explore.mount();

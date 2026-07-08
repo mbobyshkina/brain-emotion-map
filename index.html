@@ -50,6 +50,27 @@
         <span class="vb-hint" data-i18n="rotate_hint">🖱 потяните, чтобы вращать</span>
       </div>
       <div class="brain-wrap" id="brainWrap"></div>
+      <details class="brain-tools" id="brainTools">
+        <summary>🛠 Инструменты 3D</summary>
+        <div class="bt-row"><span class="bt-lab">Системы:</span>
+          <button class="bt-btn" data-sys="limbic">Лимбическая</button>
+          <button class="bt-btn" data-sys="reward">Награда</button>
+          <button class="bt-btn" data-sys="stress">Стресс</button>
+          <button class="bt-btn" data-sys="dopamine">Дофамин</button>
+          <button class="bt-btn ghost" data-sys="none">Сброс</button>
+        </div>
+        <div class="bt-row"><span class="bt-lab">Рентген:</span>
+          <input type="range" id="xraySlider" min="0" max="100" value="0" class="bt-slider" />
+        </div>
+        <div class="bt-row"><span class="bt-lab">Разрез:</span>
+          <button class="bt-btn cut active" data-cut="none">Нет</button>
+          <button class="bt-btn cut" data-cut="sagittal">Сагитт.</button>
+          <button class="bt-btn cut" data-cut="coronal">Фронт.</button>
+          <button class="bt-btn cut" data-cut="left">Левое</button>
+          <button class="bt-btn cut" data-cut="right">Правое</button>
+        </div>
+        <div class="bt-row"><button class="bt-btn tour" id="tourBtn">▶ Экскурсия по мозгу</button></div>
+      </details>
       <div class="chem-legend" id="chemLegend"></div>
       <div class="brain-caption">
         <span class="hint" id="brainHint" data-i18n="hint_default">3D-модель мозга — вращайте её мышью. Опишите состояние, и активные зоны подсветятся.</span>
