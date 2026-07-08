@@ -449,6 +449,27 @@
     (calm || []).forEach(id => { const m = markers[id]; if (m) m.label.visible = true; });
   }
 
+  /* ---------- Сигнал по пути (для сценариев курса) ---------- */
+  function showSignal(ids, color) {
+    pickedLobe = null; clearLobes(); afterState = null;
+    clearChemistry();
+    resetAll('dim');
+    ids.forEach((id, i) => { if (markers[id]) setMarker(id, i === 0 ? 'primary' : 'secondary'); });
+    const col = new THREE.Color(color || 0x8ea0ff);
+    for (let i = 0; i < ids.length - 1; i++) {
+      const curve = curveBetween(ids[i], ids[i + 1]); if (!curve) continue;
+      const tube = new THREE.Mesh(new THREE.TubeGeometry(curve, 28, 0.012, 6, false),
+        new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 0.28, depthTest: false }));
+      tube.renderOrder = 2; chemGroup.add(tube);
+      for (let k = 0; k < 4; k++) {
+        const dot = new THREE.Mesh(new THREE.SphereGeometry(0.033, 10, 8),
+          new THREE.MeshBasicMaterial({ color: col, transparent: true, opacity: 0.95, depthTest: false }));
+        dot.renderOrder = 4; chemGroup.add(dot);
+        chemFlows.push({ curve, dot, t: k / 4, speed: 0.32 });
+      }
+    }
+  }
+
   /* ---------- Ракурсы ---------- */
   const VIEWS = {
     side: [3.9, 0.5, 0.2], front: [0.2, 0.4, 4.4],
@@ -592,6 +613,6 @@
   window.Brain3D = {
     init, highlight, clear, pick, setView,
     showChemistry, clearChemistry, showConflict, showAfter, onRegionClick, rebuildLabels,
-    pickLobe, clearLobes, onLobeClick
+    pickLobe, clearLobes, onLobeClick, showSignal
   };
 })();
