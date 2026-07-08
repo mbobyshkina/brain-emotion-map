@@ -638,10 +638,46 @@ function switchTab(name, keep) {
 /* ---------- Примеры ---------- */
 const EXAMPLES = ['Тревожусь', 'Мне лень', 'Не могу уснуть', 'Мало спал и много ел',
   'Ничего не радует', 'Навязчивые мысли', 'Нет сил', 'Ни с кем не общалась'];
+/* Необычные/интересные запросы для кнопки «Удиви меня» */
+const INSPO = [
+  'Завидую подруге, у неё всё лучше', 'Ревную и боюсь, что уйдёт',
+  'Чувствую себя обманщиком, скоро раскусят', 'Стесняюсь людей, боюсь осуждения',
+  'Голоден и злюсь на всех', 'Ночью мысли крутятся, не могу уснуть',
+  'Мурашки от музыки', 'Дежавю, будто уже было',
+  'Всё должно быть идеально, боюсь начать', 'Я в потоке, всё по силам',
+  'Наконец отпустило, гора с плеч', 'Ничего не чувствую, как за стеклом',
+  'Горжусь собой, у меня получилось', 'Затаил обиду, задели',
+  'Благодарен за то, что есть', 'Весь день в духоте, туплю',
+  'Забыл пить воду, голова тяжёлая', 'Перед месячными на нервах'
+];
+const EN_INSPO = [
+  'I envy my friend, she has it all', "I'm jealous and afraid she'll leave",
+  'I feel like a fraud, they will find out', 'Shy around people, afraid of judgment',
+  "I'm hungry and angry at everyone", "Thoughts race at night, can't sleep",
+  'Goosebumps from music', 'Deja vu, like it happened before',
+  'It all has to be perfect, afraid to start', "I'm in the flow, everything feels doable",
+  'Finally relieved, weight off my shoulders', 'I feel nothing, like behind glass',
+  'Proud of myself, I did it', 'Holding a grudge, they hurt me',
+  'Grateful for what I have', 'Stuffy room all day, foggy',
+  'Forgot to drink water, headache', 'Irritable before my period'
+];
+let lastInspo = -1;
+function surpriseMe() {
+  const pool = (lang === 'en' && EN_INSPO) ? EN_INSPO : INSPO;
+  let i = Math.floor(Math.random() * pool.length);
+  if (pool.length > 1) { while (i === lastInspo) i = Math.floor(Math.random() * pool.length); }
+  lastInspo = i;
+  $('#feelInput').value = pool[i];
+  runAnalyze();
+}
 function buildChips() {
   const list = (lang === 'en' && window.EN_EXAMPLES) ? EN_EXAMPLES : EXAMPLES;
-  $('#exampleChips').innerHTML = list.map(e => `<span class="chip">${e}</span>`).join('');
-  $$('#exampleChips .chip').forEach(c => c.addEventListener('click', () => { $('#feelInput').value = c.textContent; runAnalyze(); }));
+  const surprise = lang === 'en' ? '🎲 Surprise me' : '🎲 Удиви меня';
+  $('#exampleChips').innerHTML =
+    `<span class="chip surprise" id="surpriseChip">${surprise}</span>` +
+    list.map(e => `<span class="chip">${e}</span>`).join('');
+  $('#surpriseChip').addEventListener('click', surpriseMe);
+  $$('#exampleChips .chip:not(.surprise)').forEach(c => c.addEventListener('click', () => { $('#feelInput').value = c.textContent; runAnalyze(); }));
 }
 
 /* ---------- Ракурсы ---------- */
