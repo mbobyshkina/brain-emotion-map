@@ -125,7 +125,7 @@ textarea:focus{outline:none;border-color:var(--accent)}
 .surprise-btn:hover{filter:brightness(1.12)}
 .surprise-btn:active{transform:translateY(1px)}
 /* Карта эмоций */
-.emo-grid{display:flex;flex-wrap:wrap;gap:8px}
+.emo-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
 .emo-chip{display:inline-flex;align-items:center;gap:6px;background:var(--panel2);border:1px solid var(--line);color:var(--text);font-size:13px;padding:7px 12px;border-radius:20px;cursor:pointer;transition:.15s}
 .emo-chip:hover{border-color:var(--accent);background:#26325a}
 .emo-chip.active{background:linear-gradient(135deg,#6c8bff,#a678ff);border-color:transparent;color:#fff;font-weight:600}
