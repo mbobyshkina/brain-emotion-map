@@ -415,13 +415,34 @@ function buildLibrary(filter = '') {
   const grid = $('#libGrid');
   const f = filter.toLowerCase();
   const items = STATES.filter(s => !f || stateLabel(s).toLowerCase().includes(f) || s.label.toLowerCase().includes(f));
-  grid.innerHTML = items.map(s => {
+  let html = items.map(s => {
     const v = VALENCE[s.id] || 0;
     const cls = v >= 1 ? 'pos' : v <= -1 ? 'neg' : 'neu';
     return `<button class="lib-item ${cls}" data-state="${s.id}">
       <span class="li-emoji">${s.emoji}</span><span class="li-label">${stateLabel(s)}</span></button>`;
   }).join('');
-  $$('#libGrid .lib-item').forEach(b => b.addEventListener('click', () => showStateById(b.dataset.state)));
+  const lifeIds = Object.keys(LIFESTYLE).filter(id => !f || (LIFESTYLE[id].label || '').toLowerCase().includes(f));
+  if (lifeIds.length) {
+    html += `<div class="lib-sep">🧬 ${lang === 'en' ? 'Lifestyle' : 'Образ жизни'}</div>`;
+    html += lifeIds.map(id => {
+      const L = LIFESTYLE[id];
+      return `<button class="lib-item life" data-life="${id}">
+        <span class="li-emoji">${L.emoji}</span><span class="li-label">${L.label}</span></button>`;
+    }).join('');
+  }
+  grid.innerHTML = html;
+  $$('#libGrid .lib-item[data-state]').forEach(b => b.addEventListener('click', () => showStateById(b.dataset.state)));
+  $$('#libGrid .lib-item[data-life]').forEach(b => b.addEventListener('click', () => showLifestyleById(b.dataset.life)));
+}
+function showLifestyleById(id) {
+  if (!LIFESTYLE[id]) return;
+  switchTab('analyze');
+  $('#feelInput').value = LIFESTYLE[id].label;
+  lastMatches = [];
+  lastLifestyle = [id];
+  showState([], LIFESTYLE[id].label, { save: false, factors: [id] });
+  setAnalyzeHint();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 function showStateById(id) {
   const s = STATES.find(x => x.id === id); if (!s) return;

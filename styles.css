@@ -264,6 +264,8 @@ textarea:focus{outline:none;border-color:var(--accent)}
 .lib-item.pos{border-left:3px solid var(--good)}
 .lib-item.neg{border-left:3px solid var(--primary-glow)}
 .lib-item.neu{border-left:3px solid var(--secondary-glow)}
+.lib-item.life{border-left:3px solid var(--accent)}
+.lib-sep{grid-column:1/-1;margin:14px 0 2px;font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
 
 /* ---------- Курс ---------- */
 .course-progress{display:flex;align-items:center;gap:10px;margin-top:12px}
