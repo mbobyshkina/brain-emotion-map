@@ -26,6 +26,7 @@
         <button data-lang="ru" class="active">RU</button>
         <button data-lang="en">EN</button>
       </div>
+      <button class="help-btn" id="helpBtn" data-i18n="help_btn" title="Как пользоваться">❔ Как пользоваться</button>
       <button class="install-btn" id="installBtn" data-i18n="install">⤓ Установить</button>
     </div>
   </header>
@@ -223,6 +224,24 @@
 </div>
 
 <input type="file" id="restoreFile" accept=".nmbak,application/json" class="hidden-file" />
+
+<!-- Онбординг / инструкция -->
+<div class="modal-overlay hidden" id="onboardModal">
+  <div class="modal onboard">
+    <button class="modal-close" id="onboardClose">✕</button>
+    <div class="ob-emoji" id="obEmoji">👋</div>
+    <h3 id="obTitle"></h3>
+    <div class="ob-body" id="obBody"></div>
+    <div class="ob-dots" id="obDots"></div>
+    <div class="ob-nav">
+      <button class="ghost-btn" id="obSkip"></button>
+      <div class="ob-nav-right">
+        <button class="ghost-btn" id="obPrev"></button>
+        <button class="ob-next" id="obNext"></button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- Модалка установки -->
 <div class="modal-overlay hidden" id="installModal">

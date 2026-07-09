@@ -794,6 +794,50 @@ function buildBrainTools() {
   });
 }
 
+/* ---------- Онбординг / инструкция ---------- */
+const ONBOARD_KEY = 'neuromirror_onboarded_v1';
+const ONBOARD = {
+  ru: [
+    { e: '👋', t: 'Добро пожаловать!', h: '<b>Brain Emotion Map</b> показывает, что происходит в вашем мозге. Опишите, что чувствуете, — приложение подсветит ответственные зоны, объяснит механизм и даст научные советы.<br><br>Пройдёмся за минуту по тому, что здесь есть.' },
+    { e: '📝', t: 'Шаг 1. Опишите состояние', h: 'На вкладке <b>«Анализ»</b>:<ul><li>Напишите своими словами: «тревожно», «наелся сладкого», «меня бросили».</li><li>Или нажмите готовую подсказку под полем.</li><li>Кнопка <b>🎲 Удиви меня</b> подкинет интересный запрос.</li></ul>Затем — <b>«Показать, что в мозге»</b>.' },
+    { e: '🧠', t: 'Шаг 2. Живая 3D-модель', h: 'Активные зоны <b>подсвечиваются</b>, летящие точки — нейромедиаторы. Модель можно <b>вращать</b> мышью и менять ракурс.<br><br>В блоке <b>«Инструменты 3D»</b> — подсветка систем, «рентген», разрез и <b>авто-экскурсия</b> по структурам с пояснениями.' },
+    { e: '💡', t: 'Шаг 3. Читайте разбор', h: 'В ответе вы увидите:<ul><li><b>Задействованные структуры</b> мозга.</li><li><b>Механизм</b> простыми словами.</li><li><b>Советы «по науке»</b>: действие → что делает мозг → почему станет легче.</li></ul>Плюс влияние образа жизни и изучаемые добавки.' },
+    { e: '🗺', t: 'Вкладка «Мозг»', h: '<ul><li><b>🎭 Карта эмоций</b> — выберите чувство, и зоны загорятся на модели.</li><li><b>🧭 Погружение</b> — курс о мозге от простого к сложному, с бейджами.</li><li><b>🧠 Атлас</b> структур, <b>🎯 Викторина</b> и <b>💡 Открытия</b> нейронауки.</li></ul>' },
+    { e: '📈', t: 'Программы и Дневник', h: '<ul><li><b>Программы</b> — пошаговые практики (например, дофаминовое голодание) с трекером.</li><li><b>Дневник</b> — записывайте состояния и смотрите динамику настроения и повторяющиеся паттерны.</li></ul>' },
+    { e: '🔒', t: 'Важно знать', h: '<ul><li>Всё хранится <b>только в вашем браузере</b> — приватно, работает офлайн.</li><li>Можно <b>установить</b> как приложение (кнопка ⤓ вверху).</li><li>Язык <b>RU / EN</b> — переключатель вверху.</li></ul>Это образовательный инструмент, а не диагностика.' }
+  ],
+  en: [
+    { e: '👋', t: 'Welcome!', h: '<b>Brain Emotion Map</b> shows what happens in your brain. Describe what you feel — the app highlights the regions behind it, explains the mechanism and gives science-based tips.<br><br>Let\'s take a minute to see what\'s here.' },
+    { e: '📝', t: 'Step 1. Describe your state', h: 'On the <b>Analyze</b> tab:<ul><li>Type in your own words: "anxious", "ate too much sugar", "got dumped".</li><li>Or tap a ready-made chip below the field.</li><li>The <b>🎲 Surprise me</b> button throws in an interesting query.</li></ul>Then hit <b>"Show what\'s in the brain"</b>.' },
+    { e: '🧠', t: 'Step 2. Living 3D model', h: 'Active regions <b>light up</b>, flying dots are neurotransmitters. You can <b>rotate</b> the model and change the angle.<br><br>In <b>3D Tools</b> — highlight systems, "x-ray", cross-section and an <b>auto-tour</b> of the structures with explanations.' },
+    { e: '💡', t: 'Step 3. Read the breakdown', h: 'The result shows:<ul><li>The <b>brain structures</b> involved.</li><li>The <b>mechanism</b> in plain words.</li><li><b>Science-based tips</b>: action → what the brain does → why you feel better.</li></ul>Plus lifestyle effects and researched supplements.' },
+    { e: '🗺', t: 'The "Brain" tab', h: '<ul><li><b>🎭 Emotion map</b> — pick a feeling and the regions light up.</li><li><b>🧭 Deep dive</b> — a course about the brain, simple to complex, with badges.</li><li><b>🧠 Atlas</b>, <b>🎯 Quiz</b> and <b>💡 Discoveries</b> of neuroscience.</li></ul>' },
+    { e: '📈', t: 'Programs & Diary', h: '<ul><li><b>Programs</b> — step-by-step practices (e.g. a dopamine reset) with a tracker.</li><li><b>Diary</b> — log your states and see mood trends and recurring patterns.</li></ul>' },
+    { e: '🔒', t: 'Good to know', h: '<ul><li>Everything is stored <b>only in your browser</b> — private, works offline.</li><li>You can <b>install</b> it as an app (⤓ button at the top).</li><li>Language <b>RU / EN</b> — switch at the top.</li></ul>This is an educational tool, not a diagnosis.' }
+  ]
+};
+let obStep = 0;
+function obSteps() { return ONBOARD[lang] || ONBOARD.ru; }
+function renderOnboard() {
+  const steps = obSteps(), s = steps[obStep], last = obStep === steps.length - 1;
+  $('#obEmoji').textContent = s.e;
+  $('#obTitle').textContent = s.t;
+  $('#obBody').innerHTML = s.h;
+  $('#obDots').innerHTML = steps.map((_, i) => `<span class="${i === obStep ? 'on' : ''}"></span>`).join('');
+  $('#obPrev').textContent = t('ob_back'); $('#obPrev').style.visibility = obStep === 0 ? 'hidden' : 'visible';
+  $('#obSkip').textContent = t('ob_skip'); $('#obSkip').style.visibility = last ? 'hidden' : 'visible';
+  $('#obNext').textContent = last ? t('ob_done') : t('ob_next');
+}
+function openOnboarding(step = 0) { obStep = step; renderOnboard(); $('#onboardModal').classList.remove('hidden'); }
+function closeOnboarding() { $('#onboardModal').classList.add('hidden'); localStorage.setItem(ONBOARD_KEY, '1'); }
+function maybeShowOnboarding() { if (!localStorage.getItem(ONBOARD_KEY)) openOnboarding(0); }
+$('#obNext').addEventListener('click', () => { if (obStep >= obSteps().length - 1) closeOnboarding(); else { obStep++; renderOnboard(); } });
+$('#obPrev').addEventListener('click', () => { if (obStep > 0) { obStep--; renderOnboard(); } });
+$('#obSkip').addEventListener('click', closeOnboarding);
+$('#onboardClose').addEventListener('click', closeOnboarding);
+$('#onboardModal').addEventListener('click', e => { if (e.target === $('#onboardModal')) closeOnboarding(); });
+$('#helpBtn').addEventListener('click', () => openOnboarding(0));
+
 /* ---------- PWA ---------- */
 let deferredPrompt = null;
 if ('serviceWorker' in navigator && location.protocol.startsWith('http')) {
@@ -853,3 +897,4 @@ $$('#langSwitch button').forEach(b => b.addEventListener('click', () => { lang =
 buildChips(); buildRegionList(); buildViewBar(); buildBrainTools(); buildTriggerChips();
 buildLibrary(); buildCourse(); renderHistory(); applyLang();
 buildUpdatesUI(); if (window.Explore) Explore.mount();
+maybeShowOnboarding();
