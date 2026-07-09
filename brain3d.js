@@ -233,9 +233,26 @@
   }
 
   /* ---------- Маркеры структур ---------- */
-  function makeMarker(r) {
+  // Анатомическая геометрия структуры (иначе — сфера-маркер).
+  function structureGeo(id, r, side) {
+    if (id === 'hippocampus') {
+      // «морской конёк»: изогнутая трубка вдоль оси спереди-назад с загибом-головкой
+      const s = side === 'left' ? -1 : 1;
+      const P = [
+        [0.00 * s, 0.05, -0.25], [0.035 * s, 0.00, -0.13], [0.05 * s, -0.03, 0.00],
+        [0.05 * s, -0.045, 0.12], [0.025 * s, -0.035, 0.21], [-0.02 * s, 0.03, 0.26],
+        [-0.03 * s, 0.10, 0.23]
+      ].map(a => new THREE.Vector3(a[0], a[1], a[2]));
+      const curve = new THREE.CatmullRomCurve3(P, false, 'catmullrom', 0.5);
+      const g = new THREE.TubeGeometry(curve, 56, 0.055, 14, false);
+      g.center();
+      return g;
+    }
+    return new THREE.SphereGeometry(r, 22, 16);
+  }
+  function makeMarker(id, r, side) {
     const m = new THREE.Mesh(
-      new THREE.SphereGeometry(r, 22, 16),
+      structureGeo(id, r, side),
       new THREE.MeshStandardMaterial({
         color: COL.base, emissive: COL.base, emissiveIntensity: 0.25,
         roughness: 0.35, transparent: true, opacity: 0.9, depthTest: false
@@ -305,11 +322,12 @@
           : [def.p];
       const halos = [];
       pts.forEach(p => {
-        const mk = makeMarker(def.r || 0.11);
+        // сторона полушария (для парных структур)
+        const side = (def.bilateral || def.points) ? (p[0] > 0.02 ? 'right' : p[0] < -0.02 ? 'left' : '') : '';
+        const mk = makeMarker(id, def.r || 0.11, side);
         mk.position.set(p[0], p[1], p[2]);
         mk.userData.regionId = id;
-        // сторона полушария (для парных структур)
-        mk.userData.side = (def.bilateral || def.points) ? (p[0] > 0.02 ? 'right' : p[0] < -0.02 ? 'left' : '') : '';
+        mk.userData.side = side;
         brainGroup.add(mk);
         meshes.push(mk);
         const halo = makeHalo();
