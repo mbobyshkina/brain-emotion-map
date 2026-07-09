@@ -497,6 +497,325 @@ const EN = {
   }
 };
 
+/* ---------- Английский перевод курса «Погружение» (COURSE) ---------- */
+EN.course = {
+  bigpicture: {
+    title: "The big picture", sub: "Where it all starts: the brain's 3 “floors”", badge: "Navigator",
+    cards: {
+      stem: { name: "Floor 1 — the “reptilian” brain (brainstem)",
+        simple: "The oldest floor. Keeps you alive: breathing, heartbeat, sleep, “fight/flight”. Runs without your input.",
+        deeper: "The brainstem and its nuclei set the overall tone of the nervous system and trigger basic reflexes. Evolutionarily the oldest part, shared with reptiles.",
+        fact: "It never “switches off” — otherwise breathing would stop.",
+        life: "When you “can't think” in a panic — this floor has taken over the controls." },
+      limbic: { name: "Floor 2 — the emotional brain (limbic)",
+        simple: "The middle floor. Feelings, fear, desires, memory. It's fast and loud — it reacts before you've thought.",
+        deeper: "The limbic system (amygdala, hippocampus, hypothalamus) rates things as “dangerous/pleasant” and drives emotion and motivation. Shared by all mammals.",
+        fact: "An emotion fires within milliseconds — long before awareness.",
+        life: "“Blew up first, realized later it was pointless” — that's floor 2 outrunning floor 3." },
+      cortex: { name: "Floor 3 — the thinking brain (cortex)",
+        simple: "The top floor. Thinks, plans, inhibits impulses, speaks. What makes us human.",
+        deeper: "The cortex, especially the prefrontal cortex, handles executive functions: goals, self-control, speech, abstraction. It matures the longest.",
+        fact: "The prefrontal cortex finishes maturing around age 25.",
+        life: "“Count to 10” — you're giving floor 3 time to grab the wheel." }
+    },
+    myth: { myth: "We only use 10% of our brain.", truth: "Almost the whole brain is engaged — just not all at once. Even at rest activity is high. A pretty myth, but false." },
+    quiz: ["breathing, heart, “fight/flight” without your input", "fear, desires, emotions — fast and loud", "planning, self-control, speech"]
+  },
+  lobes: {
+    title: "Lobes of the brain", sub: "A map of the surface: who does what", badge: "Cartographer",
+    cards: {
+      frontal: { name: "Frontal lobe",
+        simple: "The director: decisions, plans, self-control, movement, speech.",
+        deeper: "The prefrontal cortex inhibits limbic impulses and holds goals; motor areas launch movement; Broca's area handles speech.",
+        fact: "Phineas Gage survived an iron rod through his frontal lobe — but his character changed. That's how its role in personality was discovered.",
+        life: "Willpower and “pull yourself together” live here — and sag when you're sleep-deprived." },
+      parietal: { name: "Parietal lobe",
+        simple: "The body's navigator: touch, temperature, where I am in space.",
+        deeper: "It builds a map of the body and space and integrates sensations. Damage can “erase” half of space from perception.",
+        fact: "The body map is distorted: lips and fingers are “huge” by number of receptors.",
+        life: "Bringing a cup to your mouth in the dark is the parietal lobe's work." },
+      temporal: { name: "Temporal lobe",
+        simple: "Ears and memory: hearing, understanding speech, recognizing faces.",
+        deeper: "Auditory cortex + Wernicke's area (word meaning); the hippocampus (memory) sits inside. Face recognition comes from here.",
+        fact: "Hearing is here, not at the back of the head (a common mix-up).",
+        life: "A name “on the tip of your tongue” — the temporal lobe searching the archive." },
+      occipital: { name: "Occipital lobe",
+        simple: "The cinema: vision — shape, color, motion.",
+        deeper: "The visual cortex assembles a whole image from the eyes' signals. Different areas catch motion, color, contours.",
+        fact: "About a third of the cortex is involved in vision one way or another.",
+        life: "Caught movement “out of the corner of your eye” — the occipital lobe fired." }
+    },
+    myth: { myth: "Left-brained people are logical, right-brained ones are creative.", truth: "The hemispheres are slightly specialized, but there are no “personality types” by them — tasks use both. It's a pop-psychology oversimplification." },
+    quiz: ["decisions, self-control, speech", "vision", "hearing and memory", "body and space"]
+  },
+  emotion: {
+    title: "Emotions and memory", sub: "The limbic system: fear and memories", badge: "Emotion expert",
+    cards: {
+      amygdala: { name: "Amygdala — the alarm",
+        simple: "The threat detector. Screams “Danger!” and triggers fear/anxiety — very fast.",
+        deeper: "It rates stimuli for danger in ~12 ms and switches on the autonomic response before consciousness. Overactive in anxiety and PTSD.",
+        fact: "It reacts to an angry face before you've even noticed it.",
+        life: "Flinched at a sharp sound — that's the amygdala hitting the alarm." },
+      hippocampus: { name: "Hippocampus — the archive",
+        simple: "Records memories and ties them to place and time.",
+        deeper: "It moves short-term memory into long-term storage and keeps context. Sensitive to cortisol: chronic stress shrinks it.",
+        fact: "After his hippocampus was removed, patient H.M. could no longer form new memories — that's how its role was understood.",
+        life: "You remember where you parked — thank the hippocampus." },
+      insula: { name: "Insula — the body sense",
+        simple: "Hears the body from within: heartbeat, a “lump in the throat”, disgust.",
+        deeper: "Interoception: it turns body signals into felt experience. The basis of intuition and the bodily side of emotion.",
+        fact: "People who sense their heartbeat better recognize their emotions more accurately.",
+        life: "“Gut feeling” — that's the insula reading the body's signals." }
+    },
+    scenario: {
+      title: "What happens when a sharp sound startles you?",
+      steps: [
+        "1. The sound flies into the thalamus — the signal switchboard.",
+        "2. The thalamus sends a “short route” straight to the amygdala: “might be dangerous?”",
+        "3. The amygdala hits the alarm → the hypothalamus releases adrenaline and cortisol.",
+        "4. A split second later the cortex judges: “it's just a door” — and dials the alarm down."
+      ]
+    },
+    myth: { myth: "Memories are stored like a video recording.", truth: "Memory is reconstructed anew each time and is easily distorted. We “reassemble” the past rather than replay it." },
+    quiz: ["threat detector, triggers fear", "records memories and context", "body sense from within, disgust"]
+  },
+  reward: {
+    title: "Motivation and reward", sub: "Dopamine: why we do anything at all", badge: "Motivation master",
+    cards: {
+      vta: { name: "VTA — the dopamine source",
+        simple: "The fuel pump of motivation. Releases dopamine when a reward is ahead.",
+        deeper: "VTA dopamine neurons encode a “prediction error”: how much a reward beat expectation. That's the learning signal.",
+        fact: "Dopamine isn't “pleasure” — it's “worth moving toward this”.",
+        life: "Anticipating a vacation is sweeter than day one itself — that's anticipation dopamine." },
+      accumbens: { name: "Nucleus accumbens — “wanting”",
+        simple: "The center of desire. It lights up more in anticipation than on getting.",
+        deeper: "A key node of the reward system. “Wanting” (motivation, dopamine) and “liking” (pleasure, opioids) are different systems.",
+        fact: "You can strongly “want” something you no longer even “like” — that's how addiction works.",
+        life: "Opened the feed with no desire, “hand just did it” — that's “wanting” without “liking”." },
+      habit: { name: "The habit loop",
+        simple: "Trigger → action → reward. Repeat it, and the brain automates it.",
+        deeper: "The striatum turns repeated pairings into automatisms, sparing the cortex effort. Changing a habit is easier by redesigning the loop than by willpower.",
+        fact: "Up to 40% of daily actions are habits, not decisions.",
+        life: "Walked into the kitchen and your hand reaches for sweets: a loop trigger fired." }
+    },
+    myth: { myth: "Dopamine is the pleasure hormone.", truth: "Dopamine is about motivation and anticipation (“wanting”), not pleasure itself (“liking”). They're often confused." },
+    quiz: ["releases dopamine for a future reward", "center of desire, “wanting”", "trigger → action → reward"]
+  },
+  chemistry: {
+    title: "Brain chemistry", sub: "Neurotransmitters: gas, brake and settings", badge: "Brain chemist",
+    cards: {
+      dopamine: { name: "Dopamine — motivation",
+        simple: "“Wanting”, anticipation, moving toward a goal.",
+        deeper: "Reward, learning, initiative. Too little — apathy and “don't want to”; over-stimulation with fast rewards raises the bar.",
+        fact: "Cocaine and amphetamines hit exactly the dopamine system.",
+        life: "Ticked a box on your list — a small dopamine bump." },
+      serotonin: { name: "Serotonin — calm",
+        simple: "Mood, calm, sleep, “I have enough”.",
+        deeper: "Regulates mood, sleep, appetite, impulsivity. Antidepressants (SSRIs) act on it.",
+        fact: "Most of the body's serotonin is in the gut (the “gut–brain” link).",
+        life: "The calm contentment after a walk in the sun — that's serotonin." },
+      gaba: { name: "GABA — the brake",
+        simple: "The brain's main brake: it calms and dampens over-excitation.",
+        deeper: "The main inhibitory transmitter. Sedatives and alcohol act on it — hence the relaxation.",
+        fact: "Without GABA's braking, neurons would “rev up” into seizures.",
+        life: "That “it let go” feeling after an exhale — the brake kicked in." },
+      glutamate: { name: "Glutamate — the gas",
+        simple: "The main accelerator: excitation, learning, memory.",
+        deeper: "The main excitatory transmitter. Its balance with GABA decides whether the brain “revs up” or “brakes”.",
+        fact: "Learning is literally the strengthening of glutamate connections between neurons.",
+        life: "The drive and “caught the wave” at work — the gas is on." },
+      norep: { name: "Noradrenaline — vigilance",
+        simple: "Focus, anxiety, mobilization — “attention!”.",
+        deeper: "Raises vigilance and attention; in excess — anxiety and insomnia. Its source is the locus coeruleus in the brainstem.",
+        fact: "Caffeine indirectly boosts the noradrenaline system — hence the “jitters”.",
+        life: "Snapped into focus before a deadline — noradrenaline." }
+    },
+    myth: { myth: "There's a “chemical balance” you just need to “raise”.", truth: "It's not about one substance but a fine balance of systems and their receptors. “Chemical imbalance” is a strong oversimplification." },
+    quiz: ["motivation and “wanting”", "calm, mood, sleep", "the brain's main brake", "the main accelerator, learning", "vigilance, “attention!”"]
+  },
+  circuits: {
+    title: "How structures talk", sub: "Not regions but circuits: here you start to “see the system”", badge: "Systems thinker",
+    cards: {
+      hpa: { name: "The stress axis (HPA)",
+        simple: "Amygdala → hypothalamus → adrenal glands → cortisol. That's how the body flips into threat mode.",
+        deeper: "The hypothalamus–pituitary–adrenal axis. Cortisol mobilizes, but chronically it weakens the prefrontal cortex and hippocampus.",
+        fact: "Long-term stress literally shrinks the hippocampus and worsens memory.",
+        life: "Constant crunch → “fog” and forgetfulness — that's cortisol along the HPA axis." },
+      rewardpath: { name: "The reward pathway",
+        simple: "VTA → nucleus accumbens → prefrontal cortex. The road of motivation and addiction.",
+        deeper: "The mesocorticolimbic pathway: dopamine from the VTA assigns value to things, the cortex decides whether to act. All addictions hit this route.",
+        fact: "Food, sex, likes and drugs use one and the same pathway.",
+        life: "The urge to check your phone — the reward pathway is active." },
+      fearloop: { name: "The anxiety loop",
+        simple: "The amygdala sounds the alarm, the cortex is supposed to calm it. If the cortex is weak, the loop spins up.",
+        deeper: "Normally the prefrontal cortex inhibits the amygdala. With sleep loss/stress that inhibition weakens — anxiety amplifies itself.",
+        fact: "A single sleepless night raises amygdala reactivity by about 60%.",
+        life: "At night a small problem feels like a catastrophe — the cortex “sleeps”, the amygdala “drives”." },
+      dmn: { name: "The default mode network (DMN)",
+        simple: "Switches on when you're “doing nothing” and churns thoughts about yourself.",
+        deeper: "The default network is active at rest; its overactivity is linked to rumination. An external task quiets it.",
+        fact: "Meditation and flow “switch off” the DMN — hence the sense of quiet in the head.",
+        life: "Lay down to sleep and thoughts started “spinning”: the DMN switched on." }
+    },
+    scenario: {
+      title: "What happens when you get stuck in the feed?",
+      steps: [
+        "1. An unpredictable reward (something suddenly interesting) → a dopamine spike from the VTA.",
+        "2. The nucleus accumbens shouts “more!” — and you keep scrolling.",
+        "3. The prefrontal cortex (“enough”) weakens from fatigue and the stream.",
+        "4. The striatum records the loop into a habit — tomorrow you'll be pulled back."
+      ]
+    },
+    myth: { myth: "Each brain region works on its own.", truth: "The brain is networks and circuits. One function is a conversation among many regions, not “center X does Y”." },
+    quiz: ["amygdala → hypothalamus → cortisol", "VTA → accumbens → cortex, the road of addiction", "switches on at rest, churns thoughts about yourself", "amygdala sounds the alarm, cortex can't dampen it in time"]
+  },
+  substances: {
+    title: "The brain and substances", sub: "What caffeine, alcohol, nicotine and others do", badge: "Amateur neuropharmacologist",
+    cards: {
+      caffeine: { name: "Caffeine",
+        simple: "Blocks the “fatigue sensor” (adenosine) — sleepiness is temporarily switched off.",
+        deeper: "Caffeine occupies adenosine receptors, indirectly raising dopamine and noradrenaline. Adenosine piles up “behind the curtain” — then it hits.",
+        fact: "Caffeine clears over 5–8 hours: a 4 p.m. coffee is still in your blood at night.",
+        life: "The afternoon “coffee crash” — accumulated adenosine landing all at once." },
+      alcohol: { name: "Alcohol",
+        simple: "Boosts the brake (GABA) and mutes the gas (glutamate) — it relaxes and “switches off” self-control.",
+        deeper: "It first hits the prefrontal cortex (hence the boldness and chattiness), wrecks REM sleep, and by morning drops serotonin — “sober anxiety”.",
+        fact: "Even “calm” sleep with alcohol is poorer in restorative REM.",
+        life: "“Drunken courage” is a switched-off cortex, not added strength." },
+      nicotine: { name: "Nicotine",
+        simple: "Hits acetylcholine and dopamine receptors: brief focus + a strong “want more”.",
+        deeper: "A very fast dopamine spike and rapid receptor adaptation make it one of the most addictive substances.",
+        fact: "Nicotine reaches the brain in ~10 seconds after a puff.",
+        life: "A cigarette “calms” mostly by relieving its own withdrawal." },
+      cannabis: { name: "Cannabis (THC)",
+        simple: "Acts on the brain's own “relaxing” system (endocannabinoids).",
+        deeper: "THC activates CB1 receptors; it affects the hippocampus (short-term memory) and the reward system. Risks are higher for the developing teenage brain.",
+        fact: "The brain has its own “cannabinoids” — which is why the substance works at all.",
+        life: "Short-term memory “blanks” under THC — that's a muted hippocampus." },
+      stimulants: { name: "Stimulants",
+        simple: "Sharply raise dopamine and noradrenaline — focus and energy, but with a crash.",
+        deeper: "Amphetamines/cocaine force dopamine to be released and not cleared. Therapeutic doses (for ADHD) act more subtly than street ones — dose and control decide everything.",
+        fact: "The same dopamine mechanism underlies both ADHD treatment and addiction — the difference is dose and control.",
+        life: "The “euphoria → crash” after a stimulant is depleted, dumped dopamine." },
+      sugar: { name: "Sugar",
+        simple: "A fast reward for the dopamine system + an energy spike and drop.",
+        deeper: "It activates the nucleus accumbens (not as strongly as drugs, but by the same pathway). A glucose spike → insulin → a dip → craving for another hit.",
+        fact: "The fat+sugar combo barely exists in nature — the brain isn't “calibrated” for it.",
+        life: "“Ate a cookie — an hour later I want more” — that's the glucose rollercoaster." }
+    },
+    myth: { myth: "Alcohol helps you sleep better.", truth: "It speeds up falling asleep but steals restorative REM sleep and wakes you before dawn. Sleep gets worse, not better." },
+    quiz: ["blocks the fatigue sensor (adenosine)", "boosts the GABA brake, mutes self-control", "dopamine in 10 seconds, highly addictive", "acts on endocannabinoids, hits memory", "a fast dopamine reward + glucose spike"]
+  },
+  tricks: {
+    title: "How the brain fools us", sub: "And how to steer it back", badge: "Hacker of your own brain",
+    cards: {
+      overload: { name: "Dopamine overload",
+        simple: "Fast rewards raise the “bar” — and ordinary life starts to feel boring.",
+        deeper: "Constant super-stimuli (feeds, sugar, games) lower dopamine receptor sensitivity. The result — anhedonia and “nothing feels good”.",
+        fact: "It's not about the amount of dopamine but about dropped receptor sensitivity.",
+        life: "After an hour of reels a book “won't land” — the bar is raised." },
+      "return-overload": { name: "…how to get it back",
+        simple: "A “dopamine pause”: fewer super-rewards → receptors recover sensitivity.",
+        deeper: "Remove fast stimuli for a while, add “slow dopamine” (sport, light, working with your hands, live contact). The bar gradually lowers.",
+        fact: "Even a day without super-stimuli noticeably brings back the taste for simple things.",
+        life: "After a day without the phone, food, a walk and a talk feel good again." },
+      procrast: { name: "Procrastination",
+        simple: "The cortex wants a delayed reward, the limbic system wants pleasure now. The brain picks the easy option.",
+        deeper: "A conflict between the prefrontal cortex and the reward system. The amygdala can tag a task as “unpleasant” — so you avoid discomfort, you're not “lazy”.",
+        fact: "Procrastination is about emotion regulation, not laziness or time management.",
+        life: "“I'll start with a 2-minute step” — you trick the startup threshold." },
+      negbias: { name: "The negativity bias",
+        simple: "The brain grabs onto threats and negatives harder than the good. Safer for survival that way.",
+        deeper: "“Negativity bias”: the amygdala gives negatives more weight. One criticism outweighs ten praises — an evolutionary setting.",
+        fact: "Bad “sticks”, good “slides off” — you're not a pessimist, it's a setting.",
+        life: "The whole day was good, but you remember one awkward moment — that's the bias." },
+      anxloop: { name: "The anxiety loop",
+        simple: "Anxiety feeds thoughts, thoughts feed anxiety. The circle closes.",
+        deeper: "The amygdala + the default network spin up rumination, and a tired cortex won't switch focus. An external action and a slow exhale break the loop.",
+        fact: "A long exhale activates the vagus nerve and physically brakes anxiety.",
+        life: "Switched to working with your hands — the “carousel” in your head stopped." }
+    },
+    myth: { myth: "Procrastination = laziness and weak discipline.", truth: "It's primarily a way to avoid an unpleasant emotion. What works isn't “kicks” but reducing discomfort and micro-steps." },
+    quiz: ["fast rewards raised the bar, everything's boring", "cortex wants later, limbic wants now", "the negative weighs more than the positive", "anxiety and thoughts spin each other up"]
+  },
+  states: {
+    title: "Brain states", sub: "How ADHD, anxiety, depression, addiction “come together”", badge: "The one who understands",
+    note: "This is popular science, not a diagnosis. For a diagnosis, see a specialist.",
+    cards: {
+      adhd: { name: "How ADHD develops",
+        simple: "Less dopamine/noradrenaline in the regulation system — the brain struggles to hold the boring and inhibit impulses.",
+        deeper: "An immature/weaker prefrontal-striatal dopamine network: weak inhibition, a pull toward novelty and immediate reward, the “delayed” feels unreachable. Largely heritable.",
+        fact: "Stimulants paradoxically calm ADHD — they raise dopamine where it's lacking.",
+        life: "“Can't make myself until it's on fire” — the reward has to be here and now." },
+      "anxiety-dev": { name: "How anxiety comes together",
+        simple: "An over-sensitive amygdala + weak cortical inhibition = an alarm with no real threat.",
+        deeper: "A hyper-reactive amygdala and reduced prefrontal control cement anxiety loops; chronic cortisol raises sensitivity to threat.",
+        fact: "Anxiety is an “alarm” tuned too sensitively, not a broken character.",
+        life: "Heart pounding before an ordinary call — a false amygdala alarm." },
+      "depression-dev": { name: "How depression comes together",
+        simple: "The reward system drops (no “wanting” or joy) + rumination spins up. The world dims.",
+        deeper: "Reduced activity of the reward system and left prefrontal cortex, an overactive DMN, chronic stress hitting the hippocampus. Not “weakness” but a system failure.",
+        fact: "Exercise and light are comparable to antidepressants in mild cases.",
+        life: "“Nothing feels good and no energy to start” — a quieted reward system." },
+      "addiction-dev": { name: "How addiction comes together",
+        simple: "A super-reward hijacks the dopamine pathway: “wanting” grows, “liking” drops, control weakens.",
+        deeper: "Repeated spikes lower receptor sensitivity and rewire the habit loop; prefrontal control weakens. “Wanting” splits off from “liking”.",
+        fact: "In late stages a person no longer gets the high — but still irresistibly “wants” it.",
+        life: "“I know it's no joy, but I'm still pulled” — “wanting” and “liking” have split." }
+    },
+    myth: { myth: "ADHD is about laziness and bad upbringing.", truth: "It's a feature of how dopamine regulation works, with a strong hereditary component. It's about neurobiology, not character." },
+    quiz: ["little dopamine for regulation, hard to inhibit and hold the boring", "sensitive amygdala + weak cortical control", "the reward system drops + rumination", "a super-reward hijacks dopamine, “wanting” tears from “liking”"]
+  },
+  trauma: {
+    title: "How trauma forms", sub: "What science knows about the mark a threat leaves", badge: "The one who understands trauma",
+    note: "This is popular science and support, not therapy. For severe trauma effects, see a specialist — it is treatable.",
+    cards: {
+      t_amygdala: { name: "Amygdala — “over-learned” fear",
+        simple: "In the moment of threat the amygdala screams at maximum and re-learns to be afraid. Afterward it fires at any reminder.",
+        deeper: "Intense stress boosts plasticity in the amygdala (via cortisol and noradrenaline): the fear trace is recorded firmly and generalizes — it starts reacting to similar, safe stimuli too.",
+        fact: "A smell, sound or light resembling the moment of trauma triggers a reaction instantly — the amygdala doesn't tell “then” from “now”.",
+        life: "A door slammed — and your body reacts as to a gunshot, though you know it's safe." },
+      t_hippocampus: { name: "Hippocampus — a broken “time stamp”",
+        simple: "The hippocampus is supposed to tag a memory “this was back then”. In trauma cortisol mutes it — and the memory sits with no date.",
+        deeper: "High cortisol disrupts contextual binding in the hippocampus: the traumatic memory is stored fragmentarily, without a stamp of time and place — so it surfaces as “happening right now”.",
+        fact: "A PTSD flashback is lived not as a memory but as a replay of the event — the hippocampus didn't set a “past tense”.",
+        life: "A trigger — and you're as if back THERE, not recalling from afar." },
+      t_pfc: { name: "Cortex — the disabled brake",
+        simple: "In a moment of terror the “thinking” cortex switches off so the body can act instantly. After trauma it brakes anxiety worse.",
+        deeper: "Acute stress lowers activity of the medial prefrontal cortex (top-down control) and disinhibits the amygdala; in PTSD this becomes fixed — a rational “I'm safe” stops damping the anxiety.",
+        fact: "That's why “just calm down” doesn't work: during a trigger the inhibiting cortex is literally offline.",
+        life: "You know there's no danger, but the body is still in a panic." },
+      t_freeze: { name: "Fight / flight / freeze",
+        simple: "Facing a threat the body picks “fight” or “flight”, and if there's no way out — “freeze” and shut down. It's protection, not weakness.",
+        deeper: "The HPA axis and sympathetic system trigger mobilization; with inescapable threat the dorsal vagal “freeze” and dissociation kick in — numbness, reduced pain, detachment.",
+        fact: "Freezing in the moment of trauma is an ancient automatic program: you couldn't “choose” otherwise by willpower.",
+        life: "“I just froze and did nothing” — not character but the freeze reflex firing." },
+      t_body: { name: "The body remembers",
+        simple: "Trauma is recorded not only “in the head” but in the body: tightness, a lump in the throat, a racing heart at a reminder.",
+        deeper: "The insula and autonomic system keep a bodily imprint of threat; a reminder raises the same body signals — the basis of “the body remembers what the mind forgot”.",
+        fact: "Sometimes the body reacts with tension and a pounding heart before the memory itself surfaces.",
+        life: "You walk into a place — and for no reason your stomach clenches: the body recognized the setting." },
+      t_healing: { name: "How the brain heals",
+        simple: "The brain can re-learn: in safety and with support the fear trace can be “rewritten”, and the cortex can take control again.",
+        deeper: "On retrieval a memory becomes briefly plastic (reconsolidation) — a new safe experience can update it. Evidence-based therapy (EMDR, exposure, TF-CBT) strengthens prefrontal inhibition of the amygdala.",
+        fact: "These methods work through the brain: they physically rebuild the amygdala's response via “safety learning”.",
+        life: "With each safe repetition the trigger loses a bit of its charge — that's neuroplasticity in action." }
+    },
+    scenario: {
+      title: "What happens in the brain in the moment of trauma?",
+      steps: [
+        "1. The threat signal flies into the thalamus — the switchboard.",
+        "2. The amygdala instantly maxes out the alarm — the “short route”, no analysis.",
+        "3. The hypothalamus launches fight/flight: a surge of adrenaline and cortisol, the body mobilizes.",
+        "4. The “thinking” cortex is muted — no time to reason, speed matters.",
+        "5. Under cortisol the hippocampus sets no “time stamp” — the memory records without a date and later surfaces as “now”."
+      ]
+    },
+    myth: { myth: "To cope with trauma you just need to forget it and move on.", truth: "“Forgetting” won't work — the trace is physically written into the amygdala and body. What helps isn't forgetting but a safe re-experiencing that rewrites the response (reconsolidation)." },
+    quiz: ["re-learns to fear and fires at any reminder", "under cortisol sets no “time stamp” — memory with no date", "the “thinking brake” switches off in a moment of terror", "freeze and shut down when there's no way out"]
+  }
+};
+
 /* ---------- Русские значения для новых UI-ключей ---------- */
 EN.ui_ru = {
   view_side: "Сбоку", view_front: "Спереди", view_top: "Сверху",
@@ -592,6 +911,20 @@ function snapRU() {
   RU_SNAP.stateSupp = {}; if (typeof STATE_SUPP !== 'undefined') Object.keys(STATE_SUPP).forEach(k => RU_SNAP.stateSupp[k] = STATE_SUPP[k].slice());
   RU_SNAP.trig = {}; if (typeof TRIGGERS !== 'undefined') TRIGGERS.forEach(tr => RU_SNAP.trig[tr.id] = tr.label);
   RU_SNAP.facts = {}; if (typeof FACTS !== 'undefined') Object.keys(FACTS).forEach(id => RU_SNAP.facts[id] = FACTS[id]);
+  RU_SNAP.course = {};
+  if (typeof COURSE !== 'undefined') COURSE.forEach(level => {
+    const snap = {
+      title: level.title, sub: level.sub,
+      badge: level.badge ? level.badge.name : '',
+      note: level.note || '',
+      cards: {},
+      scenario: level.scenario ? { title: level.scenario.title, steps: level.scenario.steps.map(s => s.text) } : null,
+      myth: level.myth ? { myth: level.myth.myth, truth: level.myth.truth } : null,
+      quiz: level.quiz ? level.quiz.map(q => q.clue) : []
+    };
+    level.cards.forEach(c => { snap.cards[c.id] = { name: c.name, simple: c.simple, deeper: c.deeper, fact: c.fact, life: c.life }; });
+    RU_SNAP.course[level.id] = snap;
+  });
   RU_SNAP.done = true;
 }
 
@@ -663,6 +996,29 @@ function applyContentLang(lang) {
   });
   if (typeof TRIGGERS !== 'undefined') TRIGGERS.forEach(tr => { tr.label = en ? pick(EN.triggers[tr.id], RU_SNAP.trig[tr.id]) : RU_SNAP.trig[tr.id]; });
   if (typeof FACTS !== 'undefined') Object.keys(FACTS).forEach(id => { FACTS[id] = en ? pick(EN.facts[id], RU_SNAP.facts[id]) : RU_SNAP.facts[id]; });
+  if (typeof COURSE !== 'undefined') COURSE.forEach(level => {
+    const v = en ? (EN.course[level.id] || {}) : {}, ru = RU_SNAP.course[level.id];
+    level.title = pick(v.title, ru.title);
+    level.sub = pick(v.sub, ru.sub);
+    if (level.badge) level.badge.name = pick(v.badge, ru.badge);
+    level.note = pick(v.note, ru.note);
+    level.cards.forEach(c => {
+      const cv = (v.cards && v.cards[c.id]) || {}, cru = ru.cards[c.id] || {};
+      c.name = pick(cv.name, cru.name); c.simple = pick(cv.simple, cru.simple);
+      c.deeper = pick(cv.deeper, cru.deeper); c.fact = pick(cv.fact, cru.fact); c.life = pick(cv.life, cru.life);
+    });
+    if (level.scenario && ru.scenario) {
+      const sv = v.scenario || {};
+      level.scenario.title = pick(sv.title, ru.scenario.title);
+      level.scenario.steps.forEach((st, i) => { st.text = pick(sv.steps && sv.steps[i], ru.scenario.steps[i]); });
+    }
+    if (level.myth && ru.myth) {
+      const mv = v.myth || {};
+      level.myth.myth = pick(mv.myth, ru.myth.myth);
+      level.myth.truth = pick(mv.truth, ru.myth.truth);
+    }
+    if (level.quiz) { const qv = v.quiz || []; level.quiz.forEach((q, i) => { q.clue = pick(qv[i], ru.quiz[i]); }); }
+  });
 }
 window.applyContentLang = applyContentLang;
 window.EN_EXAMPLES = EN.examples;
