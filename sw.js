@@ -1,12 +1,12 @@
 /* НейроЗеркало — сервис-воркер: офлайн-кэш + свежие обновления.
    Стратегия «сеть, потом кэш»: онлайн всегда берём свежую версию
    (и обновляем кэш), офлайн — отдаём из кэша. */
-const CACHE = 'brainmap-v6';
+const CACHE = 'brainmap-v7';
 const ASSETS = [
-  './', './index.html', './styles.css?v=6',
-  './data.js?v=6', './content.js?v=6', './explore-data.js?v=6', './course-data.js?v=6',
-  './updates.js?v=6', './programs-data.js?v=6', './brain3d.js?v=6', './charts.js?v=6',
-  './friendly.js?v=6', './explore.js?v=6', './programs.js?v=6', './en.js?v=6', './app.js?v=6',
+  './', './index.html', './styles.css?v=7',
+  './data.js?v=7', './content.js?v=7', './explore-data.js?v=7', './course-data.js?v=7',
+  './updates.js?v=7', './programs-data.js?v=7', './brain3d.js?v=7', './charts.js?v=7',
+  './friendly.js?v=7', './explore.js?v=7', './programs.js?v=7', './en.js?v=7', './app.js?v=7',
   './lib/three.min.js', './lib/OrbitControls.js',
   './manifest.webmanifest', './icons/icon.svg',
   './icons/icon-192.png', './icons/icon-512.png'

@@ -7,7 +7,7 @@
    ============================================================ */
 (function () {
   const JKEY = 'neuromirror_course_v2';
-  let mode = 'journey';
+  let mode = 'schema';
   const openTest = {};      // levelId -> текущий тест
   const LVL_COL = ['#6ea8ff', '#8b7bff', '#ff8a4c', '#68f0a0', '#c78bff', '#7ec8ec', '#f0a3b4', '#ffcf5b', '#5fd6a8'];
   const DATA = (typeof COURSE !== 'undefined') ? COURSE : [];
@@ -201,18 +201,23 @@
   }
 
   /* ---------- Режимы ---------- */
-  const AREAS = { schema: 'schemaArea', journey: 'journeyArea', atlas: 'atlasArea', quiz: 'quizPanel', updates: 'updatesPanel' };
-  const INTROS = { schema: 'schemaIntro', journey: 'journeyIntro', atlas: 'atlasIntro', quiz: 'quizIntro', updates: 'updatesIntro' };
-  const HINT_KEYS = { schema: 'hint_schema', journey: 'hint_journey', atlas: 'hint_atlas', quiz: 'hint_quiz', updates: 'hint_updates' };
+  const AREAS = { schema: 'schemaArea', atlas: 'atlasArea', quiz: 'quizPanel', updates: 'updatesPanel' };
+  const INTROS = { schema: 'schemaIntro', atlas: 'atlasIntro', quiz: 'quizIntro', updates: 'updatesIntro' };
+  const HINT_KEYS = { schema: 'hint_schema', atlas: 'hint_atlas', quiz: 'hint_quiz', updates: 'hint_updates' };
   function setMode(m) {
     mode = m;
     document.querySelectorAll('#exploreModes .em-btn').forEach(b => b.classList.toggle('active', b.dataset.mode === m));
     Object.entries(AREAS).forEach(([k, id]) => { const el = document.getElementById(id); if (el) el.classList.toggle('hidden', k !== m); });
     Object.entries(INTROS).forEach(([k, id]) => { const el = document.getElementById(id); if (el) el.classList.toggle('hidden', k !== m); });
-    if (m === 'journey') renderJourney();
     if (m === 'quiz' && typeof newQuestion === 'function' && (typeof quiz === 'undefined' || !quiz.current)) newQuestion();
     if (m === 'updates' && typeof renderDiscoveries === 'function') renderDiscoveries();
     const h = document.getElementById('brainHint'); if (h && HINT_KEYS[m]) h.textContent = t(HINT_KEYS[m]);
+  }
+
+  /* «Погружение» — теперь отдельная вкладка верхнего уровня */
+  function showJourney() {
+    renderJourney();
+    const h = document.getElementById('brainHint'); if (h) h.textContent = t('hint_journey');
   }
 
   let emoMounted = false;
@@ -224,5 +229,5 @@
   }
   function render() { setMode(mode); }
 
-  window.Explore = { mount, render, setMode };
+  window.Explore = { mount, render, setMode, showJourney };
 })();

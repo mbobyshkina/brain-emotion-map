@@ -653,6 +653,7 @@ function switchTab(name, keep) {
   if (name === 'history') renderHistory();
   if (name === 'analyze') { setAnalyzeHint(); if (lastMatches.length && !keep) replayHighlight(); }
   if (name === 'brain') { renderChemLegend([]); if (window.Explore) Explore.render(); }
+  if (name === 'journey') { renderChemLegend([]); if (window.Explore) Explore.showJourney(); }
   if (name === 'programs') { $('#brainHint').textContent = t('hint_programs'); if (window.Programs) Programs.render(); }
 }
 
@@ -823,7 +824,8 @@ const ONBOARD = {
     { e: '📝', t: 'Шаг 1. Опишите состояние', h: 'На вкладке <b>«Анализ»</b>:<ul><li>Напишите своими словами: «тревожно», «наелся сладкого», «меня бросили».</li><li>Или нажмите готовую подсказку под полем.</li><li>Кнопка <b>🎲 Удиви меня</b> подкинет интересный запрос.</li></ul>Затем — <b>«Показать, что в мозге»</b>.' },
     { e: '🧠', t: 'Шаг 2. Живая 3D-модель', h: 'Активные зоны <b>подсвечиваются</b>, летящие точки — нейромедиаторы. Модель можно <b>вращать</b> мышью и менять ракурс.<br><br>В блоке <b>«Инструменты 3D»</b> — подсветка систем, «рентген», разрез и <b>авто-экскурсия</b> по структурам с пояснениями.' },
     { e: '💡', t: 'Шаг 3. Читайте разбор', h: 'В ответе вы увидите:<ul><li><b>Задействованные структуры</b> мозга.</li><li><b>Механизм</b> простыми словами.</li><li><b>Советы «по науке»</b>: действие → что делает мозг → почему станет легче.</li></ul>Плюс влияние образа жизни и изучаемые добавки.' },
-    { e: '🗺', t: 'Вкладка «Мозг»', h: '<ul><li><b>🎭 Карта эмоций</b> — выберите чувство, и зоны загорятся на модели.</li><li><b>🧭 Погружение</b> — курс о мозге от простого к сложному, с бейджами.</li><li><b>🧠 Атлас</b> структур, <b>🎯 Викторина</b> и <b>💡 Открытия</b> нейронауки.</li></ul>' },
+    { e: '🗺', t: 'Вкладка «Мозг»', h: '<ul><li><b>🎭 Карта эмоций</b> — выберите чувство, и зоны загорятся на модели.</li><li><b>🧠 Атлас</b> структур, <b>🎯 Викторина</b> и <b>💡 Открытия</b> нейронауки.</li></ul>' },
+    { e: '🧭', t: 'Вкладка «Погружение»', h: 'Курс о мозге <b>слой за слоем</b> — от долей мозга вглубь к эмоциям, мотивации и нейромедиаторам.<ul><li>Открывайте карточки, а мини-тест открывает следующий слой.</li><li>За пройденные уровни — <b>бейджи</b> и прогресс «насколько ты понимаешь мозг».</li></ul>' },
     { e: '📈', t: 'Программы и Дневник', h: '<ul><li><b>Программы</b> — пошаговые практики (например, дофаминовое голодание) с трекером.</li><li><b>Дневник</b> — записывайте состояния и смотрите динамику настроения и повторяющиеся паттерны.</li></ul>' },
     { e: '🔒', t: 'Важно знать', h: '<ul><li>Всё хранится <b>только в вашем браузере</b> — приватно, работает офлайн.</li><li>Можно <b>установить</b> как приложение (кнопка ⤓ вверху).</li><li>Язык <b>RU / EN</b> — переключатель вверху.</li></ul>Это образовательный инструмент, а не диагностика.' }
   ],
@@ -832,7 +834,8 @@ const ONBOARD = {
     { e: '📝', t: 'Step 1. Describe your state', h: 'On the <b>Analyze</b> tab:<ul><li>Type in your own words: "anxious", "ate too much sugar", "got dumped".</li><li>Or tap a ready-made chip below the field.</li><li>The <b>🎲 Surprise me</b> button throws in an interesting query.</li></ul>Then hit <b>"Show what\'s in the brain"</b>.' },
     { e: '🧠', t: 'Step 2. Living 3D model', h: 'Active regions <b>light up</b>, flying dots are neurotransmitters. You can <b>rotate</b> the model and change the angle.<br><br>In <b>3D Tools</b> — highlight systems, "x-ray", cross-section and an <b>auto-tour</b> of the structures with explanations.' },
     { e: '💡', t: 'Step 3. Read the breakdown', h: 'The result shows:<ul><li>The <b>brain structures</b> involved.</li><li>The <b>mechanism</b> in plain words.</li><li><b>Science-based tips</b>: action → what the brain does → why you feel better.</li></ul>Plus lifestyle effects and researched supplements.' },
-    { e: '🗺', t: 'The "Brain" tab', h: '<ul><li><b>🎭 Emotion map</b> — pick a feeling and the regions light up.</li><li><b>🧭 Deep dive</b> — a course about the brain, simple to complex, with badges.</li><li><b>🧠 Atlas</b>, <b>🎯 Quiz</b> and <b>💡 Discoveries</b> of neuroscience.</li></ul>' },
+    { e: '🗺', t: 'The "Brain" tab', h: '<ul><li><b>🎭 Emotion map</b> — pick a feeling and the regions light up.</li><li><b>🧠 Atlas</b>, <b>🎯 Quiz</b> and <b>💡 Discoveries</b> of neuroscience.</li></ul>' },
+    { e: '🧭', t: 'The "Deep dive" tab', h: 'A course about the brain <b>layer by layer</b> — from the lobes inward to emotions, motivation and neurotransmitters.<ul><li>Open the cards, and a mini-test unlocks the next layer.</li><li>Earn <b>badges</b> for finished levels and track "how well you understand the brain".</li></ul>' },
     { e: '📈', t: 'Programs & Diary', h: '<ul><li><b>Programs</b> — step-by-step practices (e.g. a dopamine reset) with a tracker.</li><li><b>Diary</b> — log your states and see mood trends and recurring patterns.</li></ul>' },
     { e: '🔒', t: 'Good to know', h: '<ul><li>Everything is stored <b>only in your browser</b> — private, works offline.</li><li>You can <b>install</b> it as an app (⤓ button at the top).</li><li>Language <b>RU / EN</b> — switch at the top.</li></ul>This is an educational tool, not a diagnosis.' }
   ]
