@@ -459,7 +459,19 @@ const EN = {
     dejavu: ["deja vu", "dejavu", "like it happened before", "feels familiar", "i've seen this before", "i've been here before"],
     frisson: ["chills from music", "goosebumps from music", "musical chills", "shivers down my spine", "aesthetic chills", "frisson"],
     perfectionism: ["perfectionism", "perfectionist", "has to be perfect", "afraid to do it badly", "all or nothing", "fear of mistakes stops me", "keep redoing", "can't finish until perfect"],
-    night_rumination: ["thoughts race at night", "can't shut my brain off at night", "mind won't stop at night", "anxious thoughts at night", "lie awake overthinking", "brain won't turn off at night"]
+    night_rumination: ["thoughts race at night", "can't shut my brain off at night", "mind won't stop at night", "anxious thoughts at night", "lie awake overthinking", "brain won't turn off at night"],
+    placebo: ["placebo", "believed it would help", "expectation effect", "felt better because i believed", "thought it was medicine and it helped"],
+    nocebo: ["nocebo", "read the symptoms and felt worse", "psyched myself into feeling sick", "expected side effects and got them", "negative expectation made me feel bad"],
+    earworm: ["song stuck in my head", "earworm", "can't get the song out of my head", "melody on loop", "tune stuck in my head"],
+    butterflies: ["butterflies in my stomach", "stomach flutters", "knot in my stomach before", "stomach drops when nervous", "fluttery stomach"],
+    contagious_yawn: ["contagious yawn", "saw someone yawn and yawned", "yawn when others yawn", "yawning is catching"],
+    runners_high: ["second wind", "runner's high", "runners high", "suddenly felt light while running", "euphoria from exercise", "endorphin rush from a workout"],
+    choice_paralysis: ["choice paralysis", "too many options", "can't decide with so many choices", "overwhelmed by options", "analysis paralysis", "paralyzed by choice"],
+    tip_of_tongue: ["tip of my tongue", "on the tip of my tongue", "forgot a word i know", "can't recall the word", "name is right there but won't come"],
+    heartbreak: ["heartbroken", "heartbreak", "got dumped", "going through a breakup", "he left me", "she left me", "broke up and it hurts", "broken heart", "can't get over the breakup"],
+    homesickness: ["homesick", "homesickness", "miss home", "want to go home", "far from home and it's hard", "miss my family and home"],
+    love_first_sight: ["love at first sight", "fell for them instantly", "instant crush", "spark at first sight", "fell in love the moment i saw"],
+    emotional_contagion: ["caught their mood", "picked up on the mood", "their anxiety made me anxious", "mood rubbed off on me", "absorbed the room's mood", "the vibe is getting to me"]
   },
 
   lifestyleKeywords: {
@@ -473,7 +485,14 @@ const EN = {
     dehydration: ["forgot to drink", "barely drank water", "hardly any water", "dehydrated", "no water all day", "didn't drink water"],
     pms: ["before my period", "pms", "premenstrual", "hormones", "luteal phase", "period is coming and my mood"],
     sickness: ["getting sick", "caught a cold", "have a fever", "i'm ill", "coming down with something", "body aches", "inflammation", "the flu"],
-    stuffy: ["stuffy", "stuffy room", "no fresh air", "stale air", "not enough air", "airless room", "hard to breathe indoors"]
+    stuffy: ["stuffy", "stuffy room", "no fresh air", "stale air", "not enough air", "airless room", "hard to breathe indoors"],
+    sugar: ["ate too much sugar", "too many sweets", "sugar crash", "sugar rush", "sugar spike", "ate a ton of dessert", "sweets and now sluggish"],
+    skipped_meal: ["skipped a meal", "haven't eaten all day", "skipped lunch", "forgot to eat", "hungry all day", "empty stomach and queasy"],
+    low_sunlight: ["not enough sunlight", "no sun", "lack of daylight", "indoors all day no light", "dark winter", "gloomy and sluggish", "no daylight"],
+    jetlag: ["jet lag", "jetlag", "flight threw me off", "changed time zones", "can't sleep after the flight", "time difference"],
+    overtraining: ["overtrained", "overtraining", "pushed too hard at the gym", "wrecked after a workout", "overdid the exercise"],
+    nicotine: ["smoked a lot", "vaping all day", "too much nicotine", "chain smoking", "vaped all day"],
+    coffee_empty: ["coffee on an empty stomach", "coffee before eating", "just coffee this morning", "coffee and the jitters", "coffee no food"]
   }
 };
 

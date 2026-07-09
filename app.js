@@ -648,7 +648,10 @@ const INSPO = [
   'Наконец отпустило, гора с плеч', 'Ничего не чувствую, как за стеклом',
   'Горжусь собой, у меня получилось', 'Затаил обиду, задели',
   'Благодарен за то, что есть', 'Весь день в духоте, туплю',
-  'Забыл пить воду, голова тяжёлая', 'Перед месячными на нервах'
+  'Забыл пить воду, голова тяжёлая', 'Перед месячными на нервах',
+  'Поверил, что поможет, и полегчало', 'Меня бросили, переживаю расставание',
+  'Песня застряла в голове', 'Бабочки в животе от волнения',
+  'Наелся сладкого и вялый', 'Слишком много вариантов, не могу выбрать'
 ];
 const EN_INSPO = [
   'I envy my friend, she has it all', "I'm jealous and afraid she'll leave",
@@ -659,7 +662,10 @@ const EN_INSPO = [
   'Finally relieved, weight off my shoulders', 'I feel nothing, like behind glass',
   'Proud of myself, I did it', 'Holding a grudge, they hurt me',
   'Grateful for what I have', 'Stuffy room all day, foggy',
-  'Forgot to drink water, headache', 'Irritable before my period'
+  'Forgot to drink water, headache', 'Irritable before my period',
+  'Believed it would help and felt better', 'Got dumped, going through a breakup',
+  'Song stuck in my head', 'Butterflies in my stomach', 'Ate too much sugar and sluggish',
+  'Too many options, can\'t decide'
 ];
 let lastInspo = -1;
 function surpriseMe() {
