@@ -124,6 +124,18 @@ textarea:focus{outline:none;border-color:var(--accent)}
 .surprise-btn{flex-shrink:0;margin-top:-4px;background:linear-gradient(135deg,#6c8bff,#a678ff);border:none;color:#fff;font-size:12.5px;font-weight:600;padding:7px 13px;border-radius:20px;cursor:pointer;transition:.15s;white-space:nowrap;box-shadow:0 3px 10px rgba(108,139,255,.35)}
 .surprise-btn:hover{filter:brightness(1.12)}
 .surprise-btn:active{transform:translateY(1px)}
+/* Карта эмоций */
+.emo-grid{display:flex;flex-wrap:wrap;gap:8px}
+.emo-chip{display:inline-flex;align-items:center;gap:6px;background:var(--panel2);border:1px solid var(--line);color:var(--text);font-size:13px;padding:7px 12px;border-radius:20px;cursor:pointer;transition:.15s}
+.emo-chip:hover{border-color:var(--accent);background:#26325a}
+.emo-chip.active{background:linear-gradient(135deg,#6c8bff,#a678ff);border-color:transparent;color:#fff;font-weight:600}
+.emo-emoji{font-size:15px;line-height:1}
+.emo-detail{margin-top:14px}
+.emo-hint{color:var(--muted);font-size:13.5px;padding:8px 2px}
+.emo-card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:15px 16px}
+.emo-card-head{font-weight:700;font-size:16px;margin-bottom:10px}
+.emo-regions-row{display:flex;flex-wrap:wrap;gap:7px;margin-bottom:11px}
+.emo-mech{margin:0;color:var(--text);font-size:14px;line-height:1.55;opacity:.92}
 
 .analyze-btn{margin-top:14px;width:100%;background:linear-gradient(135deg,var(--accent),var(--accent2));border:0;color:#0b1020;font-weight:700;font-size:15px;padding:13px;border-radius:12px;cursor:pointer;transition:.15s;box-shadow:0 6px 18px rgba(110,168,255,.25)}
 .analyze-btn:hover{transform:translateY(-1px)}

@@ -682,6 +682,47 @@ function buildChips() {
   $$('#exampleChips .chip').forEach(c => c.addEventListener('click', () => { $('#feelInput').value = c.textContent; runAnalyze(); }));
 }
 
+/* ---------- Карта эмоций (режим «Эмоции» во вкладке «Мозг») ---------- */
+function emoRegions(s) {
+  return {
+    primary: s.regions.primary.slice(),
+    secondary: (s.regions.secondary || []).filter(id => !s.regions.primary.includes(id))
+  };
+}
+function buildEmotionMap(container) {
+  if (!container) return;
+  const chips = STATES.map(s =>
+    `<button class="emo-chip" data-emo="${s.id}"><span class="emo-emoji">${s.emoji}</span>${stateLabel(s)}</button>`).join('');
+  container.innerHTML =
+    `<div class="emo-grid" id="emoGrid">${chips}</div>
+     <div class="emo-detail" id="emoDetail"><div class="emo-hint">${t('emo_pick')}</div></div>`;
+  $$('#emoGrid .emo-chip').forEach(c => c.addEventListener('click', () => selectEmotion(c.dataset.emo)));
+}
+function selectEmotion(id) {
+  const s = STATES.find(x => x.id === id);
+  if (!s) return;
+  $$('#emoGrid .emo-chip').forEach(c => c.classList.toggle('active', c.dataset.emo === id));
+  const r = emoRegions(s);
+  Brain3D.highlight({ primary: r.primary, secondary: r.secondary });
+  const chem = (STATE_EXTRAS[id] || {}).chemicals || [];
+  Brain3D.showChemistry(chem); renderChemLegend(chem);
+  $('#brainHint').textContent = `${s.emoji} ${stateLabel(s)} — ${t('emo_lit')}`;
+  const tags = [
+    ...r.primary.map(x => regionTag(x, 'primary')),
+    ...r.secondary.map(x => regionTag(x, 'secondary'))
+  ].join('');
+  const det = $('#emoDetail');
+  det.innerHTML =
+    `<div class="emo-card">
+      <div class="emo-card-head">${s.emoji} ${stateLabel(s)}</div>
+      <div class="emo-regions-row">${tags}</div>
+      <p class="emo-mech">${s.mechanism}</p>
+    </div>`;
+  det.querySelectorAll('.region-tag').forEach(tag =>
+    tag.addEventListener('click', () => { if (window.Explore) Explore.setMode('atlas'); showRegionInfo(tag.dataset.region); }));
+}
+window.EmotionMap = { mount: buildEmotionMap };
+
 /* ---------- Ракурсы ---------- */
 function buildViewBar() {
   $$('#viewBar button').forEach(b => b.addEventListener('click', () => {

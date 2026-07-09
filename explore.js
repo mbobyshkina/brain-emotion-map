@@ -215,11 +215,11 @@
     const h = document.getElementById('brainHint'); if (h && HINT_KEYS[m]) h.textContent = t(HINT_KEYS[m]);
   }
 
-  let friendlyMounted = false;
+  let emoMounted = false;
   function mount() {
     document.querySelectorAll('#exploreModes .em-btn').forEach(b =>
       b.addEventListener('click', () => setMode(b.dataset.mode)));
-    if (window.Friendly && !friendlyMounted) { Friendly.mount(document.getElementById('schemaArea')); friendlyMounted = true; }
+    if (window.EmotionMap && !emoMounted) { EmotionMap.mount(document.getElementById('schemaArea')); emoMounted = true; }
     setMode('schema');
   }
   function render() { setMode(mode); }
