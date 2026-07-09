@@ -42,8 +42,44 @@ Brain3D.onRegionClick(id => { if (REGIONS[id]) { switchTab('brain'); if (window.
 Brain3D.onLobeClick(id => { switchTab('brain'); if (window.Explore) Explore.setMode('atlas'); showLobeInfo(id); });
 
 /* ---------- Движок анализа ---------- */
+const normText = s => s.toLowerCase().replace(/ё/g, 'е');
+
+/* Ограниченное расстояние Левенштейна: возвращает max+1, если больше порога. */
+function levBounded(a, b, max) {
+  const m = a.length, n = b.length;
+  if (Math.abs(m - n) > max) return max + 1;
+  let prev = Array.from({ length: n + 1 }, (_, i) => i);
+  for (let i = 1; i <= m; i++) {
+    const cur = [i]; let best = i;
+    for (let j = 1; j <= n; j++) {
+      const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+      const v = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + cost);
+      cur[j] = v; if (v < best) best = v;
+    }
+    if (best > max) return max + 1;
+    prev = cur;
+  }
+  return prev[n];
+}
+
+/* Оценка ключевого слова в тексте: точное вхождение или мягкое (опечатка). */
+function keywordScore(clean, tokens, k) {
+  if (clean.includes(k)) return k.length >= 6 ? 2 : 1;
+  // Мягкое совпадение только для одиночных слов-основ длиной ≥5 (толерантность к опечаткам)
+  if (k.length >= 5 && !k.includes(' ')) {
+    for (const w of tokens) {
+      if (w.length < 4) continue;
+      const wp = w.slice(0, k.length);        // основы: сравниваем префикс слова
+      if (levBounded(wp, k, 1) <= 1) return 1;
+      if (w.length <= k.length + 2 && levBounded(w, k, 1) <= 1) return 1;
+    }
+  }
+  return 0;
+}
+
 async function analyzeText(text) {
-  const clean = text.toLowerCase().replace(/ё/g, 'е');
+  const clean = normText(text);
+  const tokens = clean.split(/[^0-9a-zа-я]+/i).filter(w => w.length > 1);
   if (typeof window.NEURO_AI_PROVIDER === 'function') {
     try {
       const ai = await window.NEURO_AI_PROVIDER(text);
@@ -53,15 +89,18 @@ async function analyzeText(text) {
   }
   const results = [];
   for (const state of STATES) {
-    let score = 0;
+    let score = 0; const matched = [];
     for (const kw of state.keywords) {
-      const k = kw.toLowerCase().replace(/ё/g, 'е');
-      if (clean.includes(k)) score += k.length >= 6 ? 2 : 1;
+      const s = keywordScore(clean, tokens, normText(kw));
+      if (s > 0) { score += s; matched.push(kw); }
     }
-    if (score > 0) results.push({ state, score, matched: [] });
+    if (score > 0) results.push({ state, score, matched });
   }
   results.sort((a, b) => b.score - a.score);
-  return results.slice(0, 3);
+  // Мультизапрос: главное состояние + сопутствующие (соразмерные лидеру)
+  if (!results.length) return [];
+  const top = results[0].score;
+  return results.filter((r, i) => i === 0 || r.score >= Math.max(1, top * 0.4)).slice(0, 3);
 }
 
 function detectLifestyle(text) {
@@ -112,6 +151,27 @@ function regionTag(id, type) {
     <small>· ${r.system}</small></span>`;
 }
 
+/* Причинно-следственная цепочка: фактор → структуры мозга (↑/↓) → состояние */
+function renderChain(factorId, matches) {
+  const L = LIFESTYLE[factorId]; const ch = L && L.chain;
+  if (!ch || !ch.steps || !ch.steps.length) return '';
+  const arrow = '<span class="chain-arrow">→</span>';
+  const start = `<span class="chain-node start">${L.emoji} ${L.label}</span>`;
+  const steps = ch.steps.map(s => {
+    const dir = s.dir === 'up' ? 'up' : 'down';
+    const sign = dir === 'up' ? '↑' : '↓';
+    const label = s.dir === 'up' ? (lang === 'en' ? 'overactive' : 'разгоняется')
+      : (lang === 'en' ? 'weaker' : 'слабеет');
+    return `<span class="chain-node region ${dir}" data-region="${s.region}">${regName(s.region)} ${sign}<small>${label}</small></span>`;
+  });
+  // Конец цепочки: если состояние из leads реально распознано — берём его, иначе общий ярлык
+  let endLabel = ch.endLabel || '';
+  const hit = (matches || []).find(m => (ch.leads || []).includes(m.state.id));
+  if (hit) endLabel = `${hit.state.emoji} ${stateLabel(hit.state)}`;
+  const end = endLabel ? `${arrow}<span class="chain-node end">${endLabel}</span>` : '';
+  return `<div class="chain">${start}${arrow}${steps.join(arrow)}${end}</div>`;
+}
+
 async function runAnalyze() {
   const text = $('#feelInput').value.trim();
   if (!text) { $('#feelInput').focus(); return; }
@@ -137,11 +197,15 @@ function showState(matches, sourceText, opt = {}) {
     return;
   }
 
-  // Подсветка мозга
+  // Подсветка мозга: главное состояние — ярко, сопутствующие — приглушённо
   const allPrimary = new Set(), allSecondary = new Set();
   matches.forEach((m, i) => {
-    m.state.regions.primary.forEach(id => allPrimary.add(id));
-    if (i === 0) m.state.regions.secondary.forEach(id => allSecondary.add(id));
+    if (i === 0) {
+      m.state.regions.primary.forEach(id => allPrimary.add(id));
+      m.state.regions.secondary.forEach(id => allSecondary.add(id));
+    } else {
+      m.state.regions.primary.forEach(id => allSecondary.add(id));
+    }
   });
   if (allPrimary.size || allSecondary.size)
     Brain3D.highlight({ primary: [...allPrimary], secondary: [...allSecondary].filter(id => !allPrimary.has(id)) });
@@ -154,7 +218,7 @@ function showState(matches, sourceText, opt = {}) {
     if (cf) { Brain3D.showConflict(cf.a.region, cf.b.region); break; }
   }
 
-  // Блок образа жизни
+  // Блок образа жизни (+ причинно-следственные цепочки)
   let html = '';
   if (factors.length) {
     html += `<div class="lifestyle-card">
@@ -162,14 +226,20 @@ function showState(matches, sourceText, opt = {}) {
       ${factors.map(f => { const L = LIFESTYLE[f]; return `
         <div class="ls-item"><div class="ls-title">${L.emoji} ${L.label}</div>
           <div class="ls-effect">${L.effect}</div>
-          <ul class="ls-tips">${L.tips.map(t => `<li>${t}</li>`).join('')}</ul></div>`; }).join('')}
+          ${renderChain(f, matches)}
+          <ul class="ls-tips">${L.tips.map(tip => `<li>${tip}</li>`).join('')}</ul></div>`; }).join('')}
     </div>`;
   }
 
-  if (matches.length > 1)
-    html += `<div class="mixed-note">🧩 ${t('mixed_note')}</div>`;
-
-  html += matches.map((m, i) => renderStateCard(m.state, i)).join('');
+  // Основное состояние
+  if (matches.length) {
+    html += renderStateCard(matches[0].state, 0);
+    // Сопутствующие
+    if (matches.length > 1) {
+      html += `<div class="accompany-sep">🔗 ${t('accompany_title')}</div>`;
+      html += matches.slice(1).map((m, i) => renderStateCard(m.state, i + 1)).join('');
+    }
+  }
 
   // Добавки
   const supps = gatherSupplements(factors, matches.map(m => m.state.id));
@@ -188,7 +258,7 @@ function showState(matches, sourceText, opt = {}) {
 
   box.innerHTML = html;
 
-  $$('.region-tag', box).forEach(tag =>
+  $$('.region-tag, .chain-node.region', box).forEach(tag =>
     tag.addEventListener('click', () => { switchTab('brain'); if (window.Explore) Explore.setMode('atlas'); showRegionInfo(tag.dataset.region); }));
   wireAfterButtons(box);
 
@@ -266,8 +336,12 @@ function replayHighlight() {
   if (!lastMatches.length) return;
   const p = new Set(), sec = new Set();
   lastMatches.forEach((m, i) => {
-    m.state.regions.primary.forEach(id => p.add(id));
-    if (i === 0) m.state.regions.secondary.forEach(id => sec.add(id));
+    if (i === 0) {
+      m.state.regions.primary.forEach(id => p.add(id));
+      m.state.regions.secondary.forEach(id => sec.add(id));
+    } else {
+      m.state.regions.primary.forEach(id => sec.add(id));
+    }
   });
   Brain3D.highlight({ primary: [...p], secondary: [...sec].filter(id => !p.has(id)) });
   const chem = [...new Set(lastMatches.flatMap(m => (STATE_EXTRAS[m.state.id] || {}).chemicals || []))];

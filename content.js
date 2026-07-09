@@ -310,6 +310,27 @@ const LIFESTYLE = {
   }
 };
 
+/* Причинно-следственные цепочки: фактор → структуры мозга (↑/↓) → вероятное состояние.
+   endLabel — запасной ярлык, если ни одно из leads-состояний не распознано в тексте. */
+const LIFESTYLE_CHAINS = {
+  poor_sleep:   { steps: [{ region: 'pfc', dir: 'down' }, { region: 'amygdala', dir: 'up' }], leads: ['anger', 'anxiety', 'brainfog'], endLabel: '😠 раздражительность / тревога' },
+  caffeine:     { steps: [{ region: 'locus', dir: 'up' }, { region: 'amygdala', dir: 'up' }], leads: ['anxiety', 'panic'], endLabel: '😰 тревога, дрожь' },
+  coffee_empty: { steps: [{ region: 'hypothalamus', dir: 'up' }, { region: 'locus', dir: 'up' }], leads: ['anxiety', 'panic'], endLabel: '😰 дрожь, «сосёт под ложечкой»' },
+  alcohol:      { steps: [{ region: 'raphe', dir: 'down' }, { region: 'amygdala', dir: 'up' }], leads: ['anxiety', 'depression'], endLabel: '😔 тревога и подавленность наутро' },
+  low_social:   { steps: [{ region: 'acc', dir: 'up' }, { region: 'hypothalamus', dir: 'up' }], leads: ['loneliness', 'depression'], endLabel: '🌑 одиночество, спад тонуса' },
+  no_exercise:  { steps: [{ region: 'vta', dir: 'down' }, { region: 'accumbens', dir: 'down' }], leads: ['apathy', 'laziness'], endLabel: '😐 нет мотивации' },
+  screen:       { steps: [{ region: 'accumbens', dir: 'down' }], leads: ['boredom', 'apathy'], endLabel: '😑 скука, «ничего не радует»' },
+  dehydration:  { steps: [{ region: 'pfc', dir: 'down' }], leads: ['focus', 'brainfog'], endLabel: '🌫️ рассеянность, голова тяжёлая' },
+  overtraining: { steps: [{ region: 'hypothalamus', dir: 'up' }], leads: ['fatigue', 'apathy'], endLabel: '🥱 упадок сил' },
+  pms:          { steps: [{ region: 'raphe', dir: 'down' }, { region: 'amygdala', dir: 'up' }], leads: ['anger', 'anxiety', 'depression'], endLabel: '💢 раздражительность, слёзы' },
+  sugar:        { steps: [{ region: 'accumbens', dir: 'up' }], leads: ['fatigue', 'hangry'], endLabel: '🥱 скачок и спад энергии' },
+  skipped_meal: { steps: [{ region: 'pfc', dir: 'down' }, { region: 'amygdala', dir: 'up' }], leads: ['hangry', 'anger'], endLabel: '🍽️ голод-злость (hangry)' },
+  low_sunlight: { steps: [{ region: 'raphe', dir: 'down' }], leads: ['depression', 'fatigue'], endLabel: '😔 подавленность, вялость' },
+  jetlag:       { steps: [{ region: 'hypothalamus', dir: 'up' }, { region: 'pfc', dir: 'down' }], leads: ['fatigue', 'brainfog'], endLabel: '🌫️ туман, разбитость' },
+  nicotine:     { steps: [{ region: 'accumbens', dir: 'up' }], leads: ['craving'], endLabel: '🎰 тяга за новой дозой' }
+};
+Object.keys(LIFESTYLE_CHAINS).forEach(k => { if (LIFESTYLE[k]) LIFESTYLE[k].chain = LIFESTYLE_CHAINS[k]; });
+
 /* ---------- Научно изучаемые добавки ---------- */
 const SUPPLEMENTS = [
   { name: "Омега-3 (EPA/DHA)", for: "настроение, воспаление, мембраны нейронов", level: "emerging",

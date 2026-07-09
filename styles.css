@@ -236,6 +236,23 @@ textarea:focus{outline:none;border-color:var(--accent)}
 .ls-effect{font-size:13.5px;color:var(--muted);line-height:1.55;margin-bottom:7px}
 .ls-tips{margin:0;padding-left:18px;font-size:13.5px;line-height:1.6}
 
+/* ---------- Причинно-следственная цепочка ---------- */
+.chain{display:flex;flex-wrap:wrap;align-items:center;gap:6px 4px;margin:2px 0 10px;padding:10px 12px;background:rgba(110,168,255,.06);border:1px solid var(--line);border-radius:12px}
+.chain-arrow{color:var(--muted);font-size:14px;opacity:.75}
+.chain-node{display:inline-flex;align-items:center;gap:5px;font-size:12.5px;font-weight:600;padding:5px 9px;border-radius:9px;background:var(--panel2);border:1px solid var(--line);line-height:1.2;white-space:nowrap}
+.chain-node small{font-weight:500;font-size:10.5px;color:var(--muted)}
+.chain-node.start{background:rgba(139,123,255,.16);border-color:rgba(139,123,255,.4)}
+.chain-node.end{background:rgba(255,138,76,.14);border-color:rgba(255,138,76,.4)}
+.chain-node.region{cursor:pointer;transition:.15s}
+.chain-node.region:hover{border-color:var(--accent)}
+.chain-node.region.up{background:rgba(255,99,99,.13);border-color:rgba(255,99,99,.4)}
+.chain-node.region.up small{color:#ff9d9d}
+.chain-node.region.down{background:rgba(96,165,250,.13);border-color:rgba(96,165,250,.4)}
+.chain-node.region.down small{color:#9dc4ff}
+
+/* ---------- Разделитель «Сопутствующие состояния» ---------- */
+.accompany-sep{font-size:13px;font-weight:700;color:var(--muted);letter-spacing:.02em;text-transform:uppercase;margin:6px 0 12px;padding-top:14px;border-top:1px dashed var(--line)}
+
 /* ---------- Свежие исследования ---------- */
 .research-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:10px;margin-bottom:16px}
 .research-list li{background:var(--bg2);border:1px solid var(--line);border-left:3px solid var(--accent);padding:11px 13px;border-radius:10px}
